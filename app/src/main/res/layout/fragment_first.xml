@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/firstFragment"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.FirstFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:background="#DCF8FA"
+    tools:context=".Ui.FirstFragment">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFiles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/emptyFile"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:background="@drawable/ic_no_folder"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+           />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#3949AB"
+            android:textStyle="bold"
+            android:text="Empty File"/>
+
+    </LinearLayout>
 
 </FrameLayout>

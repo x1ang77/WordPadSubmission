@@ -2,20 +2,22 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/firstFragment"
     android:id="@+id/main_nav_graph">
 
     <fragment
         android:id="@+id/firstFragment"
-        android:name="com.xiangze.filemanager.UI.FirstFragment"
+        android:name="com.xiangze.filemanager.Ui.FirstFragment"
         android:label="fragment_first"
         tools:layout="@layout/fragment_first" >
         <action
-            android:id="@+id/action_firstFragment_to_secondFragment"
-            app:destination="@id/secondFragment" />
+            android:id="@+id/action_first_to_self"
+            app:destination="@id/firstFragment" />
+        <argument
+            android:name="path"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null"/>
+
     </fragment>
-    <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.xiangze.filemanager.UI.SecondFragment"
-        android:label="fragment_second"
-        tools:layout="@layout/fragment_second" />
 </navigation>
