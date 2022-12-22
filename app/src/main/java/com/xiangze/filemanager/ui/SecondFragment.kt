@@ -1,4 +1,4 @@
-package com.xiangze.filemanager.Ui
+package com.xiangze.filemanager.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
