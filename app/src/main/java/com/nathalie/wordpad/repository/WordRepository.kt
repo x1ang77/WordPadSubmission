@@ -21,7 +21,6 @@ class WordRepository {
 
     fun addWord(word: Word): Word? {
         wordsMap[++counter] = word.copy(id = counter)
-        Log.d("get words", wordsMap.values.toString())
         return wordsMap[counter]
     }
 

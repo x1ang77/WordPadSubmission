@@ -20,7 +20,9 @@ import com.nathalie.wordpad.viewModels.WordsViewModel
 class WordsFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentWordsBinding
-    private val viewModel: WordsViewModel by viewModels(ownerProducer = requireParentFragment())
+    private val viewModel: WordsViewModel by viewModels {
+        WordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,22 +43,15 @@ class WordsFragment : Fragment() {
 
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
-            Log.d("get words", it.size.toString())
         }
 
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
         }
+    }
 
-        setFragmentResultListener("from_add_item") { _, result ->
-
-            val refresh = result.getBoolean("refresh")
-            Log.d("get words", "listener" + refresh)
-            if (refresh) {
-                viewModel.getWords()
-            }
-        }
-
+    fun refresh() {
+        viewModel.getWords()
     }
 
     fun setupAdapter() {
