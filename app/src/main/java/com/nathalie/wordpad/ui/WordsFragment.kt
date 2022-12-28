@@ -45,13 +45,15 @@ class WordsFragment : Fragment() {
             adapter.setWords(it)
         }
 
-        viewModel.words.observe(viewLifecycleOwner) {
-            adapter.setWords(it)
+        binding.btnSearch.setOnClickListener {
+            val search = binding.etSearch.text.toString()
+            viewModel.getWords(search)
         }
+
     }
 
     fun refresh() {
-        viewModel.getWords()
+        viewModel.getWords("")
     }
 
     fun setupAdapter() {

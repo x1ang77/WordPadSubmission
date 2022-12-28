@@ -16,6 +16,14 @@ class DetailsViewModel(private val repo: WordRepository) : ViewModel() {
         }
     }
 
+    fun deleteWord(id: Long) {
+        repo.deleteWord(id)
+    }
+
+    fun changeStatus(id: Long) {
+        repo.changeStatus(id)
+    }
+
     class Provider(val repo: WordRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return DetailsViewModel(repo) as T

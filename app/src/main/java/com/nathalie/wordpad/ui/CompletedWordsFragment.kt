@@ -5,47 +5,64 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import com.nathalie.wordpad.MainActivity
 import com.nathalie.wordpad.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.nathalie.wordpad.adapters.WordAdapter
+import com.nathalie.wordpad.databinding.FragmentCompletedWordsBinding
+import com.nathalie.wordpad.viewModels.CompletedWordsViewModel
+import com.nathalie.wordpad.viewModels.WordsViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CompletedWordsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CompletedWordsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private lateinit var adapter: WordAdapter
+    private lateinit var binding: FragmentCompletedWordsBinding
+    private val viewModel: CompletedWordsViewModel by viewModels {
+        CompletedWordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_completed_words, container, false)
+    ): View {
+        binding=FragmentCompletedWordsBinding.inflate(layoutInflater)
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupAdapter()
+
+        viewModel.words.observe(viewLifecycleOwner) {
+            adapter.setWords(it)
+        }
+    }
+    fun refresh() {
+        lifecycleScope.launchWhenResumed {
+            viewModel.getWords()
+        }
     }
 
+    fun setupAdapter() {
+        val layoutManager = LinearLayoutManager(requireContext())
+        adapter = WordAdapter(emptyList()) {
+            val action = MainFragmentDirections.actionMainToDetails(it.id!!)
+            NavHostFragment.findNavController(this).navigate(action)
+        }
+
+        binding.rvItems.adapter = adapter
+        binding.rvItems.layoutManager = layoutManager
+    }
     companion object {
         private var completedWordsFragmentInstance: CompletedWordsFragment? = null
         fun getInstance(): CompletedWordsFragment {
             if (completedWordsFragmentInstance == null) {
-               completedWordsFragmentInstance = CompletedWordsFragment()
+                completedWordsFragmentInstance = CompletedWordsFragment()
             }
 
             return completedWordsFragmentInstance!!
         }
     }
+
 }

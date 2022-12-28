@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="1"
     tools:context=".ui.MainFragment">
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/blue"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingVertical="16dp"-->
+<!--        android:weightSum="1">-->
+
+<!--        <EditText-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginLeft="4dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:hint="Search"-->
+<!--            android:padding="8dp"-->
+<!--            android:textColorHint="@color/white" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btnSearch"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="@color/blue"-->
+<!--            android:src="@drawable/ic_search" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btnSort"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="@color/blue"-->
+<!--            android:src="@drawable/ic_sort" />-->
+
+<!--    </LinearLayout>-->
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vpWordPad"
@@ -16,9 +49,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tlWordPad"
-        android:background="@color/blue"
-        app:tabTextColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        app:tabTextColor="@color/white" />
 
 </LinearLayout>

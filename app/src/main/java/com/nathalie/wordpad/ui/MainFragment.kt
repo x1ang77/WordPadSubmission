@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,6 +26,7 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
+
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(layoutInflater)
@@ -42,10 +44,11 @@ class MainFragment : Fragment() {
 
         binding.vpWordPad.adapter = adapter
 
+
         TabLayoutMediator(binding.tlWordPad, binding.vpWordPad) { tab, pos ->
             tab.text = when (pos) {
-                0 -> "Files"
-                else -> "Gallery"
+                0 -> "New Word"
+                else -> "Completed Word"
             }
         }.attach()
 
@@ -53,6 +56,21 @@ class MainFragment : Fragment() {
             val refresh = result.getBoolean("refresh")
             if (refresh) {
                 wordsFragment.refresh()
+            }
+        }
+
+        setFragmentResultListener("from_edit") { _, result ->
+            val refresh = result.getBoolean("refresh")
+            if (refresh) {
+                wordsFragment.refresh()
+            }
+        }
+
+        setFragmentResultListener("from_details") { _, result ->
+            val refresh = result.getBoolean("refresh")
+            if (refresh) {
+                wordsFragment.refresh()
+                completedWordsFragment.refresh()
             }
         }
     }

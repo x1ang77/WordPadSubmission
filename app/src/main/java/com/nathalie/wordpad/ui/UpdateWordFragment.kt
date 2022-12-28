@@ -9,6 +9,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
+import com.nathalie.wordpad.MainActivity
 import com.nathalie.wordpad.Model.Word
 import com.nathalie.wordpad.MyApplication
 import com.nathalie.wordpad.R
@@ -18,7 +20,7 @@ import com.nathalie.wordpad.viewModels.UpdateWordViewModel
 class UpdateWordFragment : Fragment() {
     private lateinit var binding: FragmentUpdateWordBinding
     val viewModel: UpdateWordViewModel by viewModels {
-        UpdateWordViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
+        UpdateWordViewModel.Provider((requireActivity() as MainActivity).wordRepo)
     }
 
     override fun onCreateView(
@@ -51,15 +53,32 @@ class UpdateWordFragment : Fragment() {
             val synonym = binding.etSynonym.text.toString()
             val details = binding.etDetails.text.toString()
 
-            val word = Word(id, title, meaning, synonym, details)
-            viewModel.updateWord(id, word)
-            val bundle = Bundle()
-            bundle.putBoolean("refresh", true)
-            setFragmentResult("from_edit", bundle)
+            if (validate(title, meaning, synonym, details)) {
+                val word = Word(id, title, meaning, synonym, details)
+                viewModel.updateWord(id, word)
+                val bundle = Bundle()
+                bundle.putBoolean("refresh", true)
+                setFragmentResult("from_edit", bundle)
 
-            NavHostFragment.findNavController(this).popBackStack()
+                NavHostFragment.findNavController(this).popBackStack()
+            } else {
+                val snackbar =
+                    Snackbar.make(
+                        binding.root,
+                        "Make sure you fill in everything!",
+                        Snackbar.LENGTH_LONG
+                    )
+                snackbar.show()
+            }
         }
-
     }
 
+    private fun validate(vararg list: String): Boolean {
+        for (field in list) {
+            if (field.isEmpty()) {
+                return false
+            }
+        }
+        return true
+    }
 }

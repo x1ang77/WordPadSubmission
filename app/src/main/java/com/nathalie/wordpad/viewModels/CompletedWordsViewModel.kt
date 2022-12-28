@@ -7,22 +7,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.nathalie.wordpad.Model.Word
 import com.nathalie.wordpad.repository.WordRepository
 
-class WordsViewModel(val repo: WordRepository): ViewModel() {
+class CompletedWordsViewModel(private val repo: WordRepository) : ViewModel() {
     val words: MutableLiveData<List<Word>> = MutableLiveData()
 
     init {
-        getWords("")
+        getWords()
     }
 
-    fun getWords(str:String) {
-        val res = repo.getWords(str)
-        words.value = res.filter { !it.status }
+    fun getWords() {
+        val res = repo.getWords("")
+        words.value = res.filter { it.status }
         Log.d("get words", words.value.toString() + "something")
     }
 
     class Provider(val repo: WordRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return WordsViewModel(repo) as T
+            return CompletedWordsViewModel(repo) as T
         }
     }
 }
