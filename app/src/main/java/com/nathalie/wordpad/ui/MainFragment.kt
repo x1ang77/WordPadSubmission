@@ -1,21 +1,23 @@
 package com.nathalie.wordpad.ui
 
+import android.R
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nathalie.wordpad.MainActivity
-import com.nathalie.wordpad.R
+
 import com.nathalie.wordpad.adapters.ViewPagerAdapter
 import com.nathalie.wordpad.databinding.FragmentMainBinding
 import com.nathalie.wordpad.viewModels.WordsViewModel
+
 
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -51,7 +53,6 @@ class MainFragment : Fragment() {
             if (currentPage == 0) {
                 wordsFragment.refresh(search, false)
             } else {
-                viewModel.getWords(search, true)
                 completedWordsFragment.refresh(search, true)
             }
         }
@@ -60,7 +61,6 @@ class MainFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentPage = position
-                Log.d("current", currentPage.toString())
             }
         })
 
@@ -82,8 +82,11 @@ class MainFragment : Fragment() {
         setFragmentResultListener("from_edit") { _, result ->
             val refresh = result.getBoolean("refresh")
             if (refresh) {
-                wordsFragment.refresh("", false)
+                if (currentPage == 0) {
+                    wordsFragment.refresh("", false)
+                } else completedWordsFragment.refresh("", true)
             }
+
         }
 
         setFragmentResultListener("from_details") { _, result ->

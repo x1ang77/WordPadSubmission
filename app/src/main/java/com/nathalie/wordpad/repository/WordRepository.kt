@@ -28,8 +28,8 @@ class WordRepository {
         return wordsMap[id]
     }
 
-    fun updateWord(id: Long, note: Word): Word? {
-        wordsMap[id] = note
+    fun updateWord(id: Long, word: Word): Word? {
+        wordsMap[id] = word
         return wordsMap[id]
     }
 
