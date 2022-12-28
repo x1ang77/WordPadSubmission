@@ -15,8 +15,8 @@ class WordRepository {
         )
     )
 
-    fun getWords(str: String): List<Word> {
-        return wordsMap.filter { (key, value) -> Regex(str).containsMatchIn(value.title) }.values.toList()
+    fun getWords(str: String, status:Boolean = false): List<Word> {
+        return wordsMap.filter { (key, value) -> Regex(str).containsMatchIn(value.title) && value.status == status }.values.toList()
     }
 
     fun addWord(word: Word): Word? {

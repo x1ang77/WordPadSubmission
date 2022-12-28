@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nathalie.wordpad.MainActivity
 import com.nathalie.wordpad.R
@@ -35,6 +36,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var currentPage = 0
 
         val adapter = ViewPagerAdapter(
             listOf(wordsFragment, completedWordsFragment),
@@ -43,6 +45,24 @@ class MainFragment : Fragment() {
         )
 
         binding.vpWordPad.adapter = adapter
+
+        binding.btnSearch.setOnClickListener {
+            val search = binding.etSearch.text.toString()
+            if (currentPage == 0) {
+                wordsFragment.refresh(search, false)
+            } else {
+                viewModel.getWords(search, true)
+                completedWordsFragment.refresh(search, true)
+            }
+        }
+
+        binding.vpWordPad.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPage = position
+                Log.d("current", currentPage.toString())
+            }
+        })
 
 
         TabLayoutMediator(binding.tlWordPad, binding.vpWordPad) { tab, pos ->
@@ -55,22 +75,22 @@ class MainFragment : Fragment() {
         setFragmentResultListener("from_add_item") { _, result ->
             val refresh = result.getBoolean("refresh")
             if (refresh) {
-                wordsFragment.refresh()
+                wordsFragment.refresh("", false)
             }
         }
 
         setFragmentResultListener("from_edit") { _, result ->
             val refresh = result.getBoolean("refresh")
             if (refresh) {
-                wordsFragment.refresh()
+                wordsFragment.refresh("", false)
             }
         }
 
         setFragmentResultListener("from_details") { _, result ->
             val refresh = result.getBoolean("refresh")
             if (refresh) {
-                wordsFragment.refresh()
-                completedWordsFragment.refresh()
+                wordsFragment.refresh("", false)
+                completedWordsFragment.refresh("", true)
             }
         }
     }

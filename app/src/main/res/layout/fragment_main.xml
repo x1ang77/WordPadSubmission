@@ -8,38 +8,41 @@
     android:weightSum="1"
     tools:context=".ui.MainFragment">
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/blue"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:paddingVertical="16dp"-->
-<!--        android:weightSum="1">-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:orientation="horizontal"
+        android:paddingVertical="16dp"
+        android:weightSum="1">
 
-<!--        <EditText-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginLeft="4dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:hint="Search"-->
-<!--            android:padding="8dp"-->
-<!--            android:textColorHint="@color/white" />-->
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_weight="1"
+            android:hint="Search"
+            android:padding="8dp"
+            android:background="@drawable/search_input"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/btnSearch"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:backgroundTint="@color/blue"-->
-<!--            android:src="@drawable/ic_search" />-->
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:src="@drawable/ic_search" />
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/btnSort"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:backgroundTint="@color/blue"-->
-<!--            android:src="@drawable/ic_sort" />-->
+        <ImageButton
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:src="@drawable/ic_sort" />
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vpWordPad"

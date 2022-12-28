@@ -23,24 +23,31 @@ class CompletedWordsFragment : Fragment() {
     private val viewModel: CompletedWordsViewModel by viewModels {
         CompletedWordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding=FragmentCompletedWordsBinding.inflate(layoutInflater)
+        binding = FragmentCompletedWordsBinding.inflate(layoutInflater)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
 
+        binding.efabAddNewItem.setOnClickListener {
+            val action = MainFragmentDirections.actionMainToAddWord()
+            NavHostFragment.findNavController(this).navigate(action)
+        }
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
         }
     }
-    fun refresh() {
+
+    fun refresh(str: String, status: Boolean) {
         lifecycleScope.launchWhenResumed {
-            viewModel.getWords()
+            viewModel.getWords(str, status)
         }
     }
 
@@ -54,6 +61,7 @@ class CompletedWordsFragment : Fragment() {
         binding.rvItems.adapter = adapter
         binding.rvItems.layoutManager = layoutManager
     }
+
     companion object {
         private var completedWordsFragmentInstance: CompletedWordsFragment? = null
         fun getInstance(): CompletedWordsFragment {

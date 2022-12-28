@@ -11,11 +11,11 @@ class CompletedWordsViewModel(private val repo: WordRepository) : ViewModel() {
     val words: MutableLiveData<List<Word>> = MutableLiveData()
 
     init {
-        getWords()
+        getWords("", true)
     }
 
-    fun getWords() {
-        val res = repo.getWords("")
+    fun getWords(str: String, status:Boolean) {
+        val res = repo.getWords(str, status = true)
         words.value = res.filter { it.status }
         Log.d("get words", words.value.toString() + "something")
     }
