@@ -14,21 +14,27 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nathalie.wordpad.adapters.WordAdapter
 import com.nathalie.wordpad.databinding.FragmentCompletedWordsBinding
+import com.nathalie.wordpad.databinding.FragmentWordsBinding
 import com.nathalie.wordpad.viewModels.CompletedWordsViewModel
+import com.nathalie.wordpad.viewModels.MainViewModel
 import com.nathalie.wordpad.viewModels.WordsViewModel
 
 class CompletedWordsFragment : Fragment() {
     private lateinit var adapter: WordAdapter
-    private lateinit var binding: FragmentCompletedWordsBinding
+    private lateinit var binding: FragmentWordsBinding
     private val viewModel: CompletedWordsViewModel by viewModels {
         CompletedWordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
     }
+
+    private val mainViewModel: MainViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCompletedWordsBinding.inflate(layoutInflater)
+        binding = FragmentWordsBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -43,11 +49,20 @@ class CompletedWordsFragment : Fragment() {
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
         }
+
+        mainViewModel.refreshCompletedWords.observe(viewLifecycleOwner) {
+            refresh("")
+        }
+
+        binding.search.btnSearch.setOnClickListener {
+            val search = binding.search.etSearch.text.toString()
+            refresh(search)
+        }
     }
 
-    fun refresh(str: String, status: Boolean) {
+    fun refresh(str: String) {
         lifecycleScope.launchWhenResumed {
-            viewModel.getWords(str, status)
+            viewModel.getWords(str)
         }
     }
 

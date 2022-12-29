@@ -15,6 +15,7 @@ import com.nathalie.wordpad.MyApplication
 import com.nathalie.wordpad.R
 import com.nathalie.wordpad.adapters.WordAdapter
 import com.nathalie.wordpad.databinding.FragmentWordsBinding
+import com.nathalie.wordpad.viewModels.MainViewModel
 import com.nathalie.wordpad.viewModels.WordsViewModel
 
 class WordsFragment : Fragment() {
@@ -23,6 +24,9 @@ class WordsFragment : Fragment() {
     private val viewModel: WordsViewModel by viewModels {
         WordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
     }
+    private val mainViewModel: MainViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,11 +49,18 @@ class WordsFragment : Fragment() {
             adapter.setWords(it)
         }
 
+        mainViewModel.refreshWords.observe(viewLifecycleOwner) {
+            refresh("")
+        }
 
+        binding.search.btnSearch.setOnClickListener {
+            val search = binding.search.etSearch.text.toString()
+            refresh(search)
+        }
     }
 
-    fun refresh(str: String, status: Boolean) {
-        viewModel.getWords(str, status)
+    fun refresh(str: String) {
+        viewModel.getWords(str)
     }
 
     fun setupAdapter() {
