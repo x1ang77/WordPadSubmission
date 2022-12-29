@@ -19,12 +19,22 @@ class WordsViewModel(val repo: WordRepository) : ViewModel() {
         words.value = res.filter { !it.status }
     }
 
-//    fun sortWords(order: String, type: String, str: String) {
-//      val  res = repo.getWords(str, false).sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) {
-//          it.title
-//
-//        words.value = res.filter { !it.status }
-//    }
+    fun sortWords(order: String, type: String, str: String) {
+        var res = repo.getWords(str, false)
+        if (order == "asc" && type == "title") {
+            res = res.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) {
+                it.title
+            })
+        } else if (order == "dsc" && type == "title") {
+            res = res.sortedWith(compareByDescending(String.CASE_INSENSITIVE_ORDER) {
+                it.title
+            })
+        } else if (order == "dsc" && type == "date") {
+            res = res.reversed()
+        }
+
+        words.value = res.filter { !it.status }
+    }
 
     class Provider(val repo: WordRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -20,7 +20,7 @@
     <style name="WordPad.AlertDialog.Positive.Button" parent="ShapeAppearanceOverlay.Material3.Button">
         <item name="android:backgroundTint">@color/teal_200</item>
         <item name="android:textColor">@color/black</item>
-        <item name="minHeight">436dp</item>
+        <item name="minHeight">500dp</item>
         <item name="minWidth">50dp</item>
         <item name="android:textSize">12sp</item>
         <item name="android:gravity">center</item>

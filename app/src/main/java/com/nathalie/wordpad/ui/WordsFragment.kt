@@ -1,6 +1,8 @@
 package com.nathalie.wordpad.ui
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +13,7 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.view.get
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,19 +71,58 @@ class WordsFragment : Fragment() {
         }
 
         binding.search.btnSort.setOnClickListener {
-//            viewModel.sortWords("asc", "title", search)
+            var order: String = ""
+            var type: String = ""
             val dialogBinding = SortDialogBinding.inflate(layoutInflater)
             val myDialog = Dialog(requireContext(), R.style.WordPad_AlertDialog)
+            myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
+                when (id) {
+                    R.id.btnAsc -> {
+                        Log.d("debugging", "Ascending")
+                        order = "asc"
+                    }
+                    else -> {
+                        Log.d("debugging", "Descending")
+                        order = "dsc"
+                    }
+                }
 
+            }
 
+            dialogBinding.radioGroup2.setOnCheckedChangeListener { _, id ->
+                when (id) {
+                    R.id.btnTitle -> {
+                        Log.d("debugging", "Title")
+                        type = "title"
+                    }
+                    else -> {
+                        Log.d("debugging", "Date")
+                        type = "date"
+                    }
+                }
+            }
             myDialog.setContentView(dialogBinding.root)
             myDialog.setCancelable(true)
             myDialog.show()
+
+            dialogBinding.btnDone.setOnClickListener {
+                if (dialogBinding.radioGroup.checkedRadioButtonId == -1
+                    || dialogBinding.radioGroup2.checkedRadioButtonId == -1
+                ) {
+                    dialogBinding.tvWarning.isVisible = true
+                } else {
+                    viewModel.sortWords(order, type, search)
+                    myDialog.dismiss()
+                }
+
+            }
         }
     }
 
     fun refresh(str: String) {
         viewModel.getWords(str)
+        Log.d("items", adapter.itemCount.toString())
     }
 
     fun setupAdapter() {

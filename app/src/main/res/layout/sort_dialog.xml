@@ -3,14 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingVertical="@dimen/xs"
+    android:background="@drawable/rounded_dialog"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/tvWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Make sure to select sorting order and type"
+        android:textColor="@color/mauve"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="done"
+        android:backgroundTint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,56 +36,47 @@
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnDone"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
-            android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWarning">
+
+        <RadioButton
+            android:id="@+id/btnAsc"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:text="Ascending" />
 
-            <RadioButton
-                android:id="@+id/btnAsc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ascending" />
-
-            <RadioButton
-                android:id="@+id/btnDsc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="descending" />
-        </LinearLayout>
+        <RadioButton
+            android:id="@+id/btnDsc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="descending" />
     </RadioGroup>
+
     <RadioGroup
         android:id="@+id/radioGroup2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/btnDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/radioGroup">
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <RadioButton
+            android:id="@+id/btnTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:text="Title" />
 
-            <RadioButton
-                android:id="@+id/btnTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Title" />
-
-            <RadioButton
-                android:id="@+id/btnDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="descending" />
-        </LinearLayout>
+        <RadioButton
+            android:id="@+id/btnDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date" />
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>
