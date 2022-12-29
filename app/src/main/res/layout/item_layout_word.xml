@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="@color/coral"
+    app:cardBackgroundColor="@color/aqua"
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp">
 
@@ -29,12 +29,25 @@
             android:id="@+id/tvMeaning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:minLines="2"
             android:text="Meaning"
             android:textColor="@color/app_bg"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:minLines="2"
+            android:text="Date"
+            android:gravity="end"
+            android:textColor="@color/app_bg"
+            android:textSize="13sp" />
 
     </LinearLayout>
 

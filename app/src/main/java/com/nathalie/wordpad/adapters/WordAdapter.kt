@@ -22,6 +22,7 @@ class WordAdapter(
         holder.binding.run {
             tvTitle.text = item.title
             tvMeaning.text = item.meaning
+            tvDate.text = item.date.toString()
 
             cvWordItem.setOnClickListener {
                 onClick(item)

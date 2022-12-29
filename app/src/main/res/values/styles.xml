@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="WordPad.AlertDialog" parent="@style/ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarPositiveButtonStyle">@style/WordPad.AlertDialog.Positive.Button
+        </item>
+        <item name="shapeAppearanceOverlay">@style/WordPad.AlertDialog.Rounded</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/WordPad.AlertDialog.Body</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/WordPad.AlertDialog.Body</item>
+        <item name="android:gravity">center</item>
+    </style>
 
-    <style name="MaterialAlertDialog"></style>
+    <style name="WordPad.AlertDialog.Body" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/teal_700</item>
+    </style>
+
+    <style name="WordPad.AlertDialog.Rounded" parent="">
+        <item name="cornerSize">10dp</item>
+    </style>
+
+    <style name="WordPad.AlertDialog.Positive.Button" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="android:backgroundTint">@color/teal_200</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="minHeight">436dp</item>
+        <item name="minWidth">50dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>

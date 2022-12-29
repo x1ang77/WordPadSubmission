@@ -66,11 +66,10 @@ class DetailsFragment : Fragment() {
             NavHostFragment.findNavController(this).navigate(action)
         }
 
-
         binding.btnDelete.setOnClickListener {
             val bundle = Bundle()
             bundle.putBoolean("refresh", true)
-            MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog)
+            MaterialAlertDialogBuilder(requireContext(), R.style.WordPad_AlertDialog)
                 .setTitle(binding.tvTitle.text).setMessage(binding.tvMeaning.text)
                 .setCancelable(true)
                 .setPositiveButton("Yes") { _, it ->
