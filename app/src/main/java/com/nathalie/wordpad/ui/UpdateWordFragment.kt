@@ -51,6 +51,10 @@ class UpdateWordFragment : Fragment() {
             }
         }
 
+        binding.btnBack.setOnClickListener {
+            NavHostFragment.findNavController(this).popBackStack()
+        }
+
         binding.btnAdd.setOnClickListener {
             val id = navArgs.id
             val title = binding.etTitle.text.toString()

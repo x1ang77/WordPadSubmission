@@ -27,6 +27,7 @@ class WordsFragment : Fragment() {
     private val mainViewModel: MainViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +51,10 @@ class WordsFragment : Fragment() {
         }
 
         mainViewModel.refreshWords.observe(viewLifecycleOwner) {
-            refresh("")
+            if (it) {
+                refresh("")
+                mainViewModel.shouldRefreshWords(false)
+            }
         }
 
         binding.search.btnSearch.setOnClickListener {

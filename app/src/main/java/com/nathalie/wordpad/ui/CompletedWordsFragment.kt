@@ -51,7 +51,10 @@ class CompletedWordsFragment : Fragment() {
         }
 
         mainViewModel.refreshCompletedWords.observe(viewLifecycleOwner) {
-            refresh("")
+            if (it) {
+                refresh("")
+                mainViewModel.shouldRefreshWords(false)
+            }
         }
 
         binding.search.btnSearch.setOnClickListener {
