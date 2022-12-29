@@ -1,10 +1,12 @@
 package com.nathalie.wordpad.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -31,13 +33,16 @@ class UpdateWordFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val navArgs: UpdateWordFragmentArgs by navArgs()
+        var status = false
 
         viewModel.getWordById(navArgs.id)
         viewModel.word.observe(viewLifecycleOwner) {
+            status = it.status
             binding.run {
                 etTitle.setText(it.title)
                 etMeaning.setText(it.meaning)
@@ -54,7 +59,7 @@ class UpdateWordFragment : Fragment() {
             val details = binding.etDetails.text.toString()
 
             if (validate(title, meaning, synonym, details)) {
-                val word = Word(id, title, meaning, synonym, details)
+                val word = Word(id, title, meaning, synonym, details, status)
                 viewModel.updateWord(id, word)
                 val bundle = Bundle()
                 bundle.putBoolean("refresh", true)

@@ -29,7 +29,9 @@ class WordRepository {
     }
 
     fun updateWord(id: Long, word: Word): Word? {
+        Log.d("edit", word.toString())
         wordsMap[id] = word
+        Log.d("edit", wordsMap[id].toString())
         return wordsMap[id]
     }
 

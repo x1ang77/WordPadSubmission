@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
@@ -43,6 +44,7 @@ class DetailsFragment : Fragment() {
         viewModel.getWordById(navArgs.id)
 
         viewModel.word.observe(viewLifecycleOwner) {
+            if (it.status) binding.btnDone.isVisible = false
             binding.run {
                 tvTitle.text = it.title
                 tvMeaning.text = it.meaning
@@ -66,18 +68,17 @@ class DetailsFragment : Fragment() {
 
 
         binding.btnDelete.setOnClickListener {
-            val bundle=Bundle()
-            bundle.putBoolean("refresh",true)
+            val bundle = Bundle()
+            bundle.putBoolean("refresh", true)
             MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog)
                 .setTitle(binding.tvTitle.text).setMessage(binding.tvMeaning.text)
                 .setCancelable(true)
-                .setPositiveButton("Yes"){
-                        _, it ->
+                .setPositiveButton("Yes") { _, it ->
                     viewModel.deleteWord(navArgs.id)
-                    setFragmentResult("from_details",bundle)
+                    setFragmentResult("from_details", bundle)
                     NavHostFragment.findNavController(this).popBackStack()
-                }.setNegativeButton("no"){
-                        _, it -> Log.d("close alert","wtfs going on")
+                }.setNegativeButton("no") { _, it ->
+                    Log.d("close alert", "wtfs going on")
                 }
                 .show()
         }
