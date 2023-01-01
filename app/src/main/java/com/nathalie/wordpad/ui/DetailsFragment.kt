@@ -72,12 +72,11 @@ class DetailsFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext(), R.style.WordPad_AlertDialog)
                 .setTitle(binding.tvTitle.text).setMessage(binding.tvMeaning.text)
                 .setCancelable(true)
-                .setPositiveButton("Yes") { _, it ->
+                .setPositiveButton("Delete") { _, it ->
                     viewModel.deleteWord(navArgs.id)
                     setFragmentResult("from_details", bundle)
                     NavHostFragment.findNavController(this).popBackStack()
-                }.setNegativeButton("no") { _, it ->
-                    Log.d("close alert", "wtfs going on")
+                }.setNegativeButton("Cancel") { _, it ->
                 }
                 .show()
         }

@@ -56,6 +56,7 @@ class WordsFragment : Fragment() {
 
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
+            binding.llEmpty.isVisible = adapter.itemCount <= 0
         }
 
         mainViewModel.refreshWords.observe(viewLifecycleOwner) {
@@ -79,11 +80,9 @@ class WordsFragment : Fragment() {
             dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
                 when (id) {
                     R.id.btnAsc -> {
-                        Log.d("debugging", "Ascending")
                         order = "asc"
                     }
                     else -> {
-                        Log.d("debugging", "Descending")
                         order = "dsc"
                     }
                 }
@@ -93,11 +92,9 @@ class WordsFragment : Fragment() {
             dialogBinding.radioGroup2.setOnCheckedChangeListener { _, id ->
                 when (id) {
                     R.id.btnTitle -> {
-                        Log.d("debugging", "Title")
                         type = "title"
                     }
                     else -> {
-                        Log.d("debugging", "Date")
                         type = "date"
                     }
                 }
@@ -122,7 +119,6 @@ class WordsFragment : Fragment() {
 
     fun refresh(str: String) {
         viewModel.getWords(str)
-        Log.d("items", adapter.itemCount.toString())
     }
 
     fun setupAdapter() {

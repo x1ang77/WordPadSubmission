@@ -57,6 +57,7 @@ class CompletedWordsFragment : Fragment() {
         }
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
+            binding.llEmpty.isVisible = adapter.itemCount <= 0
         }
 
         mainViewModel.refreshCompletedWords.observe(viewLifecycleOwner) {
@@ -76,33 +77,22 @@ class CompletedWordsFragment : Fragment() {
             var type: String = ""
             val dialogBinding = SortDialogBinding.inflate(layoutInflater)
             val myDialog = Dialog(requireContext(), R.style.WordPad_AlertDialog)
+
             myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
                 when (id) {
-                    R.id.btnAsc -> {
-                        Log.d("debugging", "Ascending")
-                        order = "asc"
-                    }
-                    else -> {
-                        Log.d("debugging", "Descending")
-                        order = "dsc"
-                    }
+                    R.id.btnAsc -> order = "asc"
+                    else -> order = "dsc"
                 }
-
             }
 
             dialogBinding.radioGroup2.setOnCheckedChangeListener { _, id ->
                 when (id) {
-                    R.id.btnTitle -> {
-                        Log.d("debugging", "Title")
-                        type = "title"
-                    }
-                    else -> {
-                        Log.d("debugging", "Date")
-                        type = "date"
-                    }
+                    R.id.btnTitle -> type = "title"
+                    else -> type = "date"
                 }
             }
+
             myDialog.setContentView(dialogBinding.root)
             myDialog.setCancelable(true)
             myDialog.show()

@@ -4,7 +4,7 @@ import android.util.Log
 import com.nathalie.wordpad.Model.Word
 
 class WordRepository {
-    private var counter = 0L
+    private var counter = 1L
     private val wordsMap: MutableMap<Long, Word> = mutableMapOf(
         0L to Word(
             0L,
@@ -35,9 +35,7 @@ class WordRepository {
     }
 
     fun updateWord(id: Long, word: Word): Word? {
-        Log.d("edit", word.toString())
         wordsMap[id] = word
-        Log.d("edit", wordsMap[id].toString())
         return wordsMap[id]
     }
 
