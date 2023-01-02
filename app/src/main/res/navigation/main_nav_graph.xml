@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.caaron.wordpad_project.ui.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_main_to_add"
+            app:destination="@id/addFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.caaron.wordpad_project.ui.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="id"
+            app:argType="long"/>
+        <argument
+            android:name="title"
+            app:argType="string"/>
+        <argument
+            android:name="meaning"
+            app:argType="string"/>
+        <argument
+            android:name="synonym"
+            app:argType="string"/>
+        <argument
+            android:name="details"
+            app:argType="string"/>
+
+        <action
+            android:id="@+id/action_details_to_update"
+            app:destination="@id/updateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.caaron.wordpad_project.ui.AddFragment"
+        android:label="fragment_add_word"
+        tools:layout="@layout/fragment_add" />
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.caaron.wordpad_project.ui.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update" >
+        <argument
+            android:name="id"
+            app:argType="long"/>
+        <argument
+            android:name="title"
+            app:argType="string"/>
+        <argument
+            android:name="meaning"
+            app:argType="string"/>
+        <argument
+            android:name="synonym"
+            app:argType="string"/>
+        <argument
+            android:name="details"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_update_to_main"
+            app:destination="@id/mainFragment" />
+    </fragment>
+</navigation>
