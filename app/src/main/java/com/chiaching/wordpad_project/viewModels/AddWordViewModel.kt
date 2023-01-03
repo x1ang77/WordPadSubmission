@@ -11,7 +11,7 @@ class AddWordViewModel(private val repo: WordRepository) : ViewModel() {
     }
 
     class Provider(private val repo: WordRepository): ViewModelProvider.Factory{
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T{
             return AddWordViewModel(repo) as T
         }
     }
