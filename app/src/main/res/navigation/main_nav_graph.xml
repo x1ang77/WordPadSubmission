@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@+id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.xiangze.wordpadsubmission.ui.MainFragment"
+        android:label="fragment_main">
+        <action
+            android:id="@+id/action_main_to_details"
+            app:destination="@+id/detailsFragment" />
+        <action
+            android:id="@+id/action_main_to_addWord"
+            app:destination="@+id/addWordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.xiangze.wordpadsubmission.ui.DetailsFragment"
+        android:label="fragment_details">
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_details_to_updateWord"
+            app:destination="@+id/updateWordFragment"
+            app:popUpTo="@+id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addWordFragment"
+        android:name="com.xiangze.wordpadsubmission.ui.AddWordFragment"
+        android:label="fragment_add_word" />
+    <fragment
+        android:id="@+id/updateWordFragment"
+        android:name="com.xiangze.wordpadsubmission.ui.UpdateWordFragment"
+        android:label="fragment_update_word">
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+</navigation>
