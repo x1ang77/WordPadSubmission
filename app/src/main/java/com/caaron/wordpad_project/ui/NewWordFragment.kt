@@ -2,6 +2,8 @@ package com.caaron.wordpad_project.ui
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -114,9 +116,10 @@ class NewWordFragment private constructor() : Fragment() {
 //        }
 
         binding.search.btnSort.setOnClickListener{
-            val dialogBinding = layoutInflater.inflate(R.layout.item_layout_alert,null)
+            val dialogBinding = layoutInflater.inflate(R.layout.item_layout_alert,null,false)
 
-            val myDialog = Dialog(requireContext())
+            val myDialog = Dialog(requireContext(),R.style.DataBinding_AlertDialog)
+            myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             myDialog.setContentView(dialogBinding)
             myDialog.setCancelable(true)
             myDialog.show()
@@ -129,7 +132,6 @@ class NewWordFragment private constructor() : Fragment() {
                 val radioButton2 = myDialog.findViewById<RadioButton>(radioId2)
                 val radioButtonText1 = radioButton1.text
                 val radioButtonText2 = radioButton2.text
-                Log.d("idkwtfimdoing","$radioButtonText1,$radioButtonText2")
                 sortrefresh(radioButtonText1.toString(),radioButtonText2.toString())
                 myDialog.hide()
             }
