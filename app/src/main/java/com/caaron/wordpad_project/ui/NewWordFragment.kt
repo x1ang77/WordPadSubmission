@@ -13,8 +13,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.caaron.wordpad_project.MainActivity
 import com.caaron.wordpad_project.MyApplication
 import com.caaron.wordpad_project.R
 import com.caaron.wordpad_project.adapter.NewWordAdapter
@@ -28,7 +30,10 @@ class NewWordFragment private constructor() : Fragment() {
     private lateinit var binding: FragmentNewWordBinding
     private lateinit var adapter: NewWordAdapter
     private val viewModel: NewViewModel by viewModels {
-        NewViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
+        NewViewModel.Provider(
+            (requireContext().application as MyApplication).wordRepo,
+            (requireContext().application as MyApplication).storageService
+        )
     }
     private val mainViewModel: MainViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
@@ -47,6 +52,20 @@ class NewWordFragment private constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupAdapter()
+
+        viewModel.sortBy.observe(viewLifecycleOwner){
+            binding.search.btnSort
+        }
+
+        binding.srlRefresh.setOnRefreshListener {
+            viewModel.onRefresh()
+            binding.search.etSearch.setQuery("",true)
+        }
+
+        viewModel.swipeRefreshLayoutFinised.asLiveData()
+            .observe(viewLifecycleOwner){
+                binding.srlRefresh.isRefreshing = false
+            }
 
         binding.efabAddNew.setOnClickListener {
             val action = MainFragmentDirections.actionMainToAdd()
@@ -87,52 +106,24 @@ class NewWordFragment private constructor() : Fragment() {
             }
         })
 
-//        binding.search.btnSort.setOnClickListener {
-//            val alertBuilder = AlertDialog.Builder(requireContext(), R.style.Sort_popup)
-//            val view = ItemLayoutAlertBinding.inflate(layoutInflater, null, false)
-//            alertBuilder.setView(view.root)
-//            alertBuilder.create().show()
-//            view.sort.setOnClickListener {
-//                val dialogBinding = layoutInflater.inflate(R.layout.item_layout_alert,null)
-//
-//                val myDialog = Dialog(requireContext())
-//                myDialog.setContentView(dialogBinding)
-//                myDialog.setCancelable(true)
-//                myDialog.show()
-//                myDialog.findViewById<Button>(R.id.sort).setOnClickListener {
-//                    val rg=myDialog.findViewById<RadioGroup>(R.id.radioGroup1)
-//                    val rg2=myDialog.findViewById<RadioGroup>(R.id.radioGroup2)
-//                    val radioId=rg.checkedRadioButtonId
-//                    val radioId2 = rg2.checkedRadioButtonId
-//                    val radioButton1 = myDialog.findViewById<RadioButton>(radioId)
-//                    val radioButton2 = myDialog.findViewById<RadioButton>(radioId2)
-//                    val radioButtonText1 = radioButton1.text
-//                    val radioButtonText2 = radioButton2.text
-//                    Log.d("idkwtfimdoing","$radioButtonText1,$radioButtonText2")
-//                    sortrefresh(radioButtonText1.toString(),radioButtonText2.toString())
-//                    myDialog.hide()
-//                }
-//            }
-//        }
+        binding.search.btnSort.setOnClickListener {
+            val dialogBinding = layoutInflater.inflate(R.layout.item_layout_alert, null, false)
 
-        binding.search.btnSort.setOnClickListener{
-            val dialogBinding = layoutInflater.inflate(R.layout.item_layout_alert,null,false)
-
-            val myDialog = Dialog(requireContext(),R.style.DataBinding_AlertDialog)
+            val myDialog = Dialog(requireContext(), R.style.DataBinding_AlertDialog)
             myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             myDialog.setContentView(dialogBinding)
             myDialog.setCancelable(true)
             myDialog.show()
             myDialog.findViewById<Button>(R.id.sort).setOnClickListener {
-                val rg=myDialog.findViewById<RadioGroup>(R.id.radioGroup1)
-                val rg2=myDialog.findViewById<RadioGroup>(R.id.radioGroup2)
-                val radioId=rg.checkedRadioButtonId
+                val rg = myDialog.findViewById<RadioGroup>(R.id.radioGroup1)
+                val rg2 = myDialog.findViewById<RadioGroup>(R.id.radioGroup2)
+                val radioId = rg.checkedRadioButtonId
                 val radioId2 = rg2.checkedRadioButtonId
                 val radioButton1 = myDialog.findViewById<RadioButton>(radioId)
                 val radioButton2 = myDialog.findViewById<RadioButton>(radioId2)
                 val radioButtonText1 = radioButton1.text
                 val radioButtonText2 = radioButton2.text
-                sortrefresh(radioButtonText1.toString(),radioButtonText2.toString())
+                sortrefresh(radioButtonText1.toString(), radioButtonText2.toString())
                 myDialog.hide()
             }
         }
@@ -142,8 +133,8 @@ class NewWordFragment private constructor() : Fragment() {
         viewModel.getWords(str)
     }
 
-    fun sortrefresh(order:String,by:String) {
-        viewModel.sortWords(order,by)
+    fun sortrefresh(order: String, by: String) {
+        viewModel.sortWords(order, by)
     }
 
     private fun setupAdapter() {

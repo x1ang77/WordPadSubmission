@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import com.caaron.wordpad_project.adapter.NewWordAdapter
 import com.caaron.wordpad_project.adapter.ViewPagerAdapter
 import com.caaron.wordpad_project.databinding.FragmentMainBinding
+import com.caaron.wordpad_project.utils.Dropdown
 import com.caaron.wordpad_project.viewModels.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -30,6 +30,9 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var currentPage = 0
+
+//        val obj = Dropdown.create()
 
         val adapter = ViewPagerAdapter(
             listOf(newWordFragment, completedFragment),
@@ -45,6 +48,11 @@ class MainFragment : Fragment() {
                 else -> "Completed"
             }
         }.attach()
+
+        binding.etGoToDropDown.setOnClickListener{
+            val action = MainFragmentDirections.actionMainToDropdown()
+            NavHostFragment.findNavController(this).navigate(action)
+        }
 
         setFragmentResultListener("from_add_item") { _, result ->
             val refresh = result.getBoolean("refresh")

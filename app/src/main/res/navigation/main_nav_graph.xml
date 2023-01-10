@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_main_to_add"
             app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_main_to_dropdown"
+            app:destination="@id/dropdownFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -71,4 +74,9 @@
             android:id="@+id/action_update_to_main"
             app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/dropdownFragment"
+        android:name="com.caaron.wordpad_project.ui.DropdownFragment"
+        android:label="fragment_dropdown"
+        tools:layout="@layout/fragment_dropdown" />
 </navigation>
