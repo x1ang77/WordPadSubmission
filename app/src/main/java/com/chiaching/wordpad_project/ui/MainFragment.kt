@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
 import com.chiaching.wordpad_project.adapter.PagerAdapter
 import com.chiaching.wordpad_project.databinding.FragmentMainBinding
-import com.chiaching.wordpad_project.model.Word
-import com.chiaching.wordpad_project.repository.WordRepository
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment: Fragment() {

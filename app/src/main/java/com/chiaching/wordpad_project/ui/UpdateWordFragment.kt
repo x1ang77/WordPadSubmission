@@ -10,9 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import com.chiaching.wordpad_project.MyApplication
-import com.chiaching.wordpad_project.R
 import com.chiaching.wordpad_project.databinding.FragmentUpdateWordBinding
-import com.chiaching.wordpad_project.model.Word
+import com.chiaching.wordpad_project.data.model.Word
 import com.chiaching.wordpad_project.viewModels.UpdateWordViewModel
 
 class UpdateWordFragment : Fragment() {
@@ -36,7 +35,7 @@ class UpdateWordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val navArgs: UpdateWordFragmentArgs by navArgs()
 
-        viewModel.getWordById(navArgs.id)
+        viewModel.getWordById(navArgs.id.toInt())
 
         viewModel.word.observe(viewLifecycleOwner){
             binding.run {
@@ -55,7 +54,7 @@ class UpdateWordFragment : Fragment() {
             val synonyms = binding.etSynonyms.text.toString()
             val details = binding.etDetails.text.toString()
             val status = binding.tvStatus.text.toString().toBoolean()
-            val word = Word(navArgs.id, title, meaning, synonyms, details, status)
+            val word = Word(navArgs.id.toInt(), title, meaning, synonyms, details, status)
             viewModel.updateWord(navArgs.id, word)
             val bundle = Bundle()
             bundle.putBoolean("refresh",true)

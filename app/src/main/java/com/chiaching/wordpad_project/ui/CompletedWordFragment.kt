@@ -10,12 +10,12 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SearchView
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chiaching.wordpad_project.MainActivity
+import com.chiaching.wordpad_project.MyApplication
 import com.chiaching.wordpad_project.R
 import com.chiaching.wordpad_project.adapter.WordAdapter
 import com.chiaching.wordpad_project.databinding.FragmentCompletedWordBinding
@@ -26,7 +26,7 @@ class CompletedWordFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentCompletedWordBinding
     private val viewModel: CompletedWordViewModel by viewModels {
-        CompletedWordViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        CompletedWordViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,15 +92,13 @@ class CompletedWordFragment : Fragment() {
 
 
     fun refresh(str: String) {
-        lifecycleScope.launchWhenResumed {
-            viewModel.getWords(str)
-        }
+        viewModel.getWords(str)
     }
 
     fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = WordAdapter(emptyList()) {
-            val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(it.id!!)
+            val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(it.id!!.toLong())
             NavHostFragment.findNavController(this).navigate(action)
         }
         binding.rvWord.adapter = adapter

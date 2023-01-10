@@ -3,25 +3,40 @@ package com.chiaching.wordpad_project.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.chiaching.wordpad_project.model.Word
+import androidx.lifecycle.viewModelScope
+import com.chiaching.wordpad_project.data.model.Word
 import com.chiaching.wordpad_project.repository.WordRepository
+import com.chiaching.wordpad_project.repository.WordRepositoryFake
+import kotlinx.coroutines.launch
 
 class DetailsViewModel (private val repo: WordRepository): ViewModel() {
     val word: MutableLiveData<Word> = MutableLiveData()
 
     fun getWordById(id:Long){
-        val res = repo.getWordById(id)
-        res?.let{
-            word.value = it
+        viewModelScope.launch {
+            val res = repo.getWordById(id.toInt())
+            res?.let {
+                word.value = it
+            }
         }
     }
 
-    fun completedWord(id :Long){
-        repo.getCompletedWords(id)
-    }
+//    fun completedWord(id :Long){
+//        viewModelScope.launch {
+//            repo.getCompletedWords(id)
+//        }
+//    }
 
     fun deleteWord(id:Long){
-        repo.deleteWord(id)
+        viewModelScope.launch {
+            repo.deleteWord(id.toInt())
+        }
+    }
+
+    fun completedWord(id: Long) {
+        viewModelScope.launch {
+            repo.getCompletedWords(id.toInt())
+        }
     }
 
 

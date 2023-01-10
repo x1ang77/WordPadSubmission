@@ -6,8 +6,6 @@ import com.chiaching.wordpad_project.repository.WordRepository
 
 class MainActivity : AppCompatActivity() {
 
-    val wordRepo = WordRepository.getInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

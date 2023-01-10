@@ -3,8 +3,11 @@ package com.chiaching.wordpad_project.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.chiaching.wordpad_project.model.Word
+import androidx.lifecycle.viewModelScope
+import com.chiaching.wordpad_project.data.model.Word
 import com.chiaching.wordpad_project.repository.WordRepository
+import com.chiaching.wordpad_project.repository.WordRepositoryFake
+import kotlinx.coroutines.launch
 
 class CompletedWordViewModel (val repo: WordRepository): ViewModel() {
     val words: MutableLiveData<List<Word>> = MutableLiveData()
@@ -14,15 +17,19 @@ class CompletedWordViewModel (val repo: WordRepository): ViewModel() {
     }
 
     fun getWords(str: String){
-        val res = repo.getWords(str)
-        words.value = res.filter{
-            it.status
+        viewModelScope.launch {
+            val res = repo.getWords(str)
+            words.value = res.filter {
+                it.status
+            }
         }
     }
 
     fun sortWords(order:String,by:String){
-        val res=repo.sortWord(order,by)
-        words.value=res.filter { it.status }
+        viewModelScope.launch {
+            val res = repo.sortWord(order, by)
+            words.value = res.filter { it.status }
+        }
     }
 
     class Provider(val repo: WordRepository): ViewModelProvider.Factory{

@@ -9,16 +9,16 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.chiaching.wordpad_project.MainActivity
-import com.chiaching.wordpad_project.R
+import com.chiaching.wordpad_project.MyApplication
 import com.chiaching.wordpad_project.databinding.FragmentAddWordBinding
-import com.chiaching.wordpad_project.model.Word
+import com.chiaching.wordpad_project.data.model.Word
 import com.chiaching.wordpad_project.viewModels.AddWordViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class AddWordFragment : Fragment() {
     private lateinit var binding: FragmentAddWordBinding
     private val viewModel: AddWordViewModel by viewModels {
-        AddWordViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        AddWordViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
     }
 
     override fun onCreateView(
