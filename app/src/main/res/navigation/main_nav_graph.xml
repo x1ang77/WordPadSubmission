@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_main_to_addWord"
             app:destination="@id/addWordFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_dropDownFragment"
+            app:destination="@id/dropDownFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -44,5 +47,10 @@
             android:name="id"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/dropDownFragment"
+        android:name="com.nathalie.wordpad.ui.DropDownFragment"
+        android:label="fragment_drop_down"
+        tools:layout="@layout/fragment_drop_down" />
 
 </navigation>

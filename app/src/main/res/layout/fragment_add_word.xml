@@ -132,16 +132,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/add_update_input"
         android:ems="10"
+        android:gravity="start"
         android:hint="Details"
         android:inputType="textMultiLine"
+        android:lines="3"
         android:padding="8dp"
         android:textColor="@color/blue"
         android:textSize="20sp"
-        android:lines="3"
-        android:gravity="start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15"
         tools:layout_editor_absoluteX="90dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

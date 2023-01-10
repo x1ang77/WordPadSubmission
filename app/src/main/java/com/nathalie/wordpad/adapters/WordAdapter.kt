@@ -3,7 +3,7 @@ package com.nathalie.wordpad.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.nathalie.wordpad.Model.Word
+import com.nathalie.wordpad.data.Model.Word
 import com.nathalie.wordpad.databinding.ItemLayoutWordBinding
 
 class WordAdapter(

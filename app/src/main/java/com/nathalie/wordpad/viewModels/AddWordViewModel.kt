@@ -3,13 +3,16 @@ package com.nathalie.wordpad.viewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.nathalie.wordpad.Model.Word
+import androidx.lifecycle.viewModelScope
+import com.nathalie.wordpad.data.Model.Word
 import com.nathalie.wordpad.repository.WordRepository
+import kotlinx.coroutines.launch
 
 class AddWordViewModel(private val repo: WordRepository) : ViewModel() {
     fun addWord(word: Word) {
-        Log.d("get word", word.toString())
-        repo.addWord(word)
+        viewModelScope.launch {
+            repo.addWord(word)
+        }
     }
 
     class Provider(private val repo: WordRepository) : ViewModelProvider.Factory {

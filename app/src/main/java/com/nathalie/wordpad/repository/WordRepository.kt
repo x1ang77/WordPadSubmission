@@ -1,62 +1,39 @@
 package com.nathalie.wordpad.repository
 
-import android.util.Log
-import com.nathalie.wordpad.Model.Word
+import com.nathalie.wordpad.data.Model.Word
+import com.nathalie.wordpad.data.WordDao
 
-class WordRepository {
-    private var counter = 1L
-    private val wordsMap: MutableMap<Long, Word> = mutableMapOf(
-        0L to Word(
-            0L,
-            "Metanoia",
-            "The journey of changing one's word, heart or a way ot life.",
-            "something",
-            "something"
-        )
-    )
-
-    fun getWords(str: String, status: Boolean = false): List<Word> {
-        return wordsMap.filter { (key, value) ->
+class WordRepository(private val wordDao: WordDao) {
+    suspend fun getWords(str: String, status: Boolean = false): List<Word> {
+        return wordDao.getWords().filter {
             Regex(
                 str,
                 RegexOption.IGNORE_CASE
-            ).containsMatchIn(value.title) && value.status == status
-        }.values.toList()
+            ).containsMatchIn(it.title) && it.status == status
+        }.toList()
     }
 
-
-    fun addWord(word: Word): Word? {
-        wordsMap[++counter] = word.copy(id = counter)
-        return wordsMap[counter]
+    suspend fun addWord(word: Word) {
+        wordDao.insert(word)
     }
 
-    fun getWordById(id: Long): Word? {
-        return wordsMap[id]
+    suspend fun getWordById(id: Long): Word? {
+        return wordDao.getWordById(id)
     }
 
-    fun updateWord(id: Long, word: Word): Word? {
-        wordsMap[id] = word
-        return wordsMap[id]
+    suspend fun updateWord(id: Long, word: Word) {
+        wordDao.insert(word.copy(id = id))
     }
 
-    fun deleteWord(id: Long) {
-        wordsMap.remove(id)
+    suspend fun deleteWord(id: Long) {
+        wordDao.delete(id)
     }
 
-    fun changeStatus(id: Long): Word? {
-        wordsMap[id]?.status = !wordsMap[id]?.status!!
-        return wordsMap[id]
+    suspend fun getWordByTitle(title: String): List<Word> {
+        return wordDao.getWordByTitle(title)
     }
 
-    companion object {
-        var wordRepository: WordRepository? = null
-
-        fun getInstance(): WordRepository {
-            if (wordRepository == null) {
-                wordRepository = WordRepository()
-            }
-
-            return wordRepository!!
-        }
+    suspend fun updateStatus(id: Long) {
+        wordDao.updateStatusById(id, true)
     }
 }

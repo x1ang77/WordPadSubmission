@@ -10,14 +10,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.nathalie.wordpad.MainActivity
-import com.nathalie.wordpad.Model.Word
+import com.nathalie.wordpad.MyApplication
+import com.nathalie.wordpad.data.Model.Word
 import com.nathalie.wordpad.databinding.FragmentAddWordBinding
 import com.nathalie.wordpad.viewModels.AddWordViewModel
 
 class AddWordFragment : Fragment() {
     private lateinit var binding: FragmentAddWordBinding
     private val viewModel: AddWordViewModel by viewModels {
-        AddWordViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        AddWordViewModel.Provider((requireActivity().application as MyApplication).wordRepo)
     }
 
     override fun onCreateView(

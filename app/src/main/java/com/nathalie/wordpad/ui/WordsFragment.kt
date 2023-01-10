@@ -15,9 +15,13 @@ import android.widget.RadioGroup
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nathalie.wordpad.MainActivity
+import com.nathalie.wordpad.data.Model.SortBy
+import com.nathalie.wordpad.data.Model.SortOrder
+import com.nathalie.wordpad.MyApplication
 import com.nathalie.wordpad.R
 import com.nathalie.wordpad.adapters.WordAdapter
 import com.nathalie.wordpad.databinding.FragmentWordsBinding
@@ -28,13 +32,20 @@ import com.nathalie.wordpad.viewModels.WordsViewModel
 class WordsFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentWordsBinding
+    private lateinit var dialogBinding: SortDialogBinding
     private var search: String = ""
     private val viewModel: WordsViewModel by viewModels {
-        WordsViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        WordsViewModel.Provider(
+            (requireActivity().applicationContext as MyApplication).wordRepo,
+            (requireActivity().applicationContext as MyApplication).storageService,
+        )
+
     }
     private val mainViewModel: MainViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
+    var order: String = ""
+    var type: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +58,30 @@ class WordsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val dialogBinding = SortDialogBinding.inflate(layoutInflater)
+        val myDialog = Dialog(requireContext(), R.style.WordPad_AlertDialog)
+
         setupAdapter()
+
+        viewModel.sortBy.observe(viewLifecycleOwner) {
+            dialogBinding.btnTitle.isChecked = it === SortBy.TITLE.name
+            dialogBinding.btnDate.isChecked = it === SortBy.DATE.name
+
+        }
+        viewModel.sortOrder.observe(viewLifecycleOwner) {
+            dialogBinding.btnAsc.isChecked = it === SortOrder.ASC.name
+            dialogBinding.btnDsc.isChecked = it === SortOrder.DSC.name
+        }
+
+        binding.srlRefresh.setOnRefreshListener {
+            viewModel.onRefresh()
+            binding.search.etSearch.setText("")
+        }
+
+        viewModel.swipeRefreshLayoutFinished.asLiveData()
+            .observe(viewLifecycleOwner) {
+                binding.srlRefresh.isRefreshing = false
+            }
 
         binding.efabAddNewItem.setOnClickListener {
             val action = MainFragmentDirections.actionMainToAddWord()
@@ -72,30 +106,26 @@ class WordsFragment : Fragment() {
         }
 
         binding.search.btnSort.setOnClickListener {
-            var order: String = ""
-            var type: String = ""
-            val dialogBinding = SortDialogBinding.inflate(layoutInflater)
-            val myDialog = Dialog(requireContext(), R.style.WordPad_AlertDialog)
             myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
-                when (id) {
+                order = when (id) {
                     R.id.btnAsc -> {
-                        order = "asc"
+                        SortOrder.ASC.name
                     }
                     else -> {
-                        order = "dsc"
+                        SortOrder.DSC.name
                     }
                 }
 
             }
 
             dialogBinding.radioGroup2.setOnCheckedChangeListener { _, id ->
-                when (id) {
+                type = when (id) {
                     R.id.btnTitle -> {
-                        type = "title"
+                        SortBy.TITLE.name
                     }
                     else -> {
-                        type = "date"
+                        SortBy.DATE.name
                     }
                 }
             }
@@ -109,6 +139,8 @@ class WordsFragment : Fragment() {
                 ) {
                     dialogBinding.tvWarning.isVisible = true
                 } else {
+                    viewModel.onChangeSortBy(type)
+                    viewModel.onChangeSortOrder(order)
                     viewModel.sortWords(order, type, search)
                     myDialog.dismiss()
                 }
