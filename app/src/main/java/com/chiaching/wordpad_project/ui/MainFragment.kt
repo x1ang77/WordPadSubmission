@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import com.chiaching.wordpad_project.adapter.PagerAdapter
 import com.chiaching.wordpad_project.databinding.FragmentMainBinding
-import com.chiaching.wordpad_project.model.Word
-import com.chiaching.wordpad_project.repository.WordRepository
 import com.google.android.material.tabs.TabLayoutMediator
+import com.chiaching.wordpad_project.utils.Dropdown
 
 class MainFragment: Fragment() {
     private lateinit var binding: FragmentMainBinding
@@ -34,6 +33,7 @@ class MainFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val navArgs: DetailsFragmentArgs by navArgs()
 
+
         val adapter = PagerAdapter(
             listOf(newWordsFragment, completedWordsFragment ),
             requireActivity().supportFragmentManager,
@@ -41,9 +41,6 @@ class MainFragment: Fragment() {
         )
 
 //        val search = binding.svSearch.on
-
-
-
 
         binding.viewPager.adapter = adapter
 
@@ -54,6 +51,12 @@ class MainFragment: Fragment() {
                 else -> "none"
             }
         }.attach()
+
+
+        binding.fabetGotoDropdown.setOnClickListener{
+            val action = MainFragmentDirections.actionMainFragmentToDropdownFragment()
+            NavHostFragment.findNavController(this).navigate(action)
+        }
 
 
         setFragmentResultListener("from_details") { _, result ->

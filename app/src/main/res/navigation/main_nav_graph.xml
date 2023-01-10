@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_mainFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_dropdownFragment"
+            app:destination="@id/dropdownFragment" />
 
     </fragment>
 
@@ -48,6 +51,11 @@
             app:argType="long" />
 
     </fragment>
+    <fragment
+        android:id="@+id/dropdownFragment"
+        android:name="com.chiaching.wordpad_project.ui.DropdownFragment"
+        android:label="fragment_dropdown"
+        tools:layout="@layout/fragment_dropdown" />
 
 
 </navigation>

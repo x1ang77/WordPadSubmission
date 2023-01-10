@@ -40,9 +40,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:paddingTop="20dp"
         android:text="Title"
         android:textSize="18sp"
-        android:paddingTop="20dp"
         app:layout_constraintBottom_toTopOf="@+id/etTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.041"
@@ -58,8 +58,8 @@
         android:ems="10"
         android:hint="Title"
         android:inputType="textMultiLine"
-        android:textSize="14sp"
         android:padding="10dp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/tvMeaning"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.842"
@@ -88,8 +88,8 @@
         android:ems="10"
         android:hint="Meaning"
         android:inputType="textMultiLine"
-        android:textSize="14sp"
         android:padding="10dp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/tvSynonyms"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -118,8 +118,8 @@
         android:ems="10"
         android:hint="Synonyms"
         android:inputType="textMultiLine"
-        android:textSize="14sp"
         android:padding="10dp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -158,16 +158,23 @@
         app:layout_constraintTop_toBottomOf="@+id/etSynonyms"
         app:layout_constraintVertical_bias="0.032" />
 
+<!--    <include-->
+<!--        android:id="@+id/include"-->
+<!--        layout="@layout/item_layout_dropdown"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--    />-->
+
     <Button
         android:id="@+id/btn_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:text="Add"
-        android:icon="@drawable/btn"
-        android:backgroundTint="@color/blue"
-        android:textAllCaps="false"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="44dp"
+        android:backgroundTint="@color/blue"
+        android:icon="@drawable/btn"
+        android:text="Add"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

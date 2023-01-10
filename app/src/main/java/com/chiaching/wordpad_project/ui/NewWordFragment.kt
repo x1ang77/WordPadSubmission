@@ -11,6 +11,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chiaching.wordpad_project.MainActivity
@@ -23,7 +24,9 @@ class NewWordFragment : Fragment() {
     private lateinit var adapter: WordAdapter
     private lateinit var binding: FragmentNewWordBinding
     private val viewModel: NewWordViewModel by viewModels {
-        NewWordViewModel.Provider((requireActivity() as MainActivity).wordRepo)
+        NewWordViewModel.Provider(
+            (requireActivity() as MainActivity).wordRepo,
+            (requireActivity().application))
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,6 +88,16 @@ class NewWordFragment : Fragment() {
                 filterDialog.hide()
             }
         }
+
+        binding.srlRefresh.setOnRefreshListener {
+            viewModel.onRefresh()
+            binding.svSearch.setQuery("", true)
+        }
+
+        viewModel.swipeRefreshLayoutfinished.asLiveData()
+            .observe(viewLifecycleOwner){
+                binding.srlRefresh.isRefreshing = false
+            }
     }
 
     fun sortRefresh(order:String,by:String) {
