@@ -2,7 +2,7 @@ package com.example.wordapp.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.wordapp.models.Word
+import com.example.wordapp.data.models.Word
 import com.example.wordapp.repository.WordRepository
 
 class AddWordViewModel(private val repo: WordRepository) : ViewModel() {

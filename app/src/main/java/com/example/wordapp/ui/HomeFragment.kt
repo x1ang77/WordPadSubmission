@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.wordapp.adapters.HomeAdapter
 import com.example.wordapp.databinding.FragmentHomeBinding
+import com.example.wordapp.utils.Dropdown
 import com.example.wordapp.viewModels.HomeViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -55,6 +57,11 @@ class HomeFragment : Fragment() {
                 else -> tab.text = "Completed Words"
             }
         }.attach()
+
+        binding.fabGoToDropdown.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToDropdownFragment()
+            NavHostFragment.findNavController(this).navigate(action)
+        }
 
         setFragmentResults()
     }

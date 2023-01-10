@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordapp.MyApplication
@@ -19,6 +20,9 @@ import com.example.wordapp.R
 import com.example.wordapp.adapters.WordAdapter
 import com.example.wordapp.databinding.FragmentAllWordsBinding
 import com.example.wordapp.databinding.SortDialogBinding
+import com.example.wordapp.data.models.SortBy
+import com.example.wordapp.data.models.SortKey
+import com.example.wordapp.data.models.SortOrder
 import com.example.wordapp.viewModels.AllWordsViewModel
 import com.example.wordapp.viewModels.HomeViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -26,8 +30,15 @@ import com.google.android.material.snackbar.Snackbar
 class AllWordsFragment : Fragment() {
     private lateinit var binding: FragmentAllWordsBinding
     private lateinit var adapter: WordAdapter
+    var order = ""
+    var category = ""
+
     private val viewModel: AllWordsViewModel by viewModels {
-        AllWordsViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
+//        (requireActivity().application as MyApplication for wordRepo
+        AllWordsViewModel.Provider(
+            (requireContext().applicationContext as MyApplication).wordRepo,
+            (requireActivity().application as MyApplication).storageService
+        )
     }
     private val homeViewModel: HomeViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
@@ -45,6 +56,31 @@ class AllWordsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupAdapter()
+
+        val dialogBinding = SortDialogBinding.inflate(layoutInflater)
+        val myDialog = Dialog(requireContext(), R.style.Custom_AlertDialog)
+        myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        viewModel.sortBy.observe(viewLifecycleOwner) {
+            dialogBinding.rbWord.isChecked = it == SortBy.WORD.name
+            dialogBinding.rbDate.isChecked = it == SortBy.DATE.name
+            category = it
+        }
+
+        viewModel.sortOrder.observe(viewLifecycleOwner) {
+            dialogBinding.rbAsc.isChecked = it == SortOrder.ASC.name
+            dialogBinding.rbDsc.isChecked = it == SortOrder.DSC.name
+            order = it
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.onSwipeRefresh()
+            binding.search.etSearch.setText("")
+//            queryempty, true
+        }
+
+        viewModel.swipeRefreshLayoutFinished.asLiveData().observe(viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = false
+        }
 
         var sortSearch = ""
         viewModel.words.observe(viewLifecycleOwner) { words ->
@@ -87,6 +123,7 @@ class AllWordsFragment : Fragment() {
                 search.etSearch.clearFocus()
                 val search = search.etSearch.text.trim().toString()
                 viewModel.getWords(search)
+                viewModel.query = search
                 sortSearch = search
 
                 if (viewModel.words.value?.size == 0) {
@@ -116,18 +153,13 @@ class AllWordsFragment : Fragment() {
             }
 
             search.ibSort.setOnClickListener {
-                var order = ""
-                var category = ""
-                val dialogBinding = SortDialogBinding.inflate(layoutInflater)
-                val myDialog = Dialog(requireContext(), R.style.Custom_AlertDialog)
-                myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
                     order = when (id) {
                         R.id.rbAsc -> {
-                            "Ascending"
+                            SortOrder.ASC.name
                         }
                         else -> {
-                            "Descending"
+                            SortOrder.DSC.name
                         }
                     }
 
@@ -135,10 +167,10 @@ class AllWordsFragment : Fragment() {
                 dialogBinding.radioGroup2.setOnCheckedChangeListener { _, id ->
                     category = when (id) {
                         R.id.rbWord -> {
-                            "Word"
+                            SortBy.WORD.name
                         }
                         else -> {
-                            "Date"
+                            SortBy.DATE.name
                         }
                     }
                 }
@@ -153,6 +185,8 @@ class AllWordsFragment : Fragment() {
                         dialogBinding.tvWarning.isVisible = true
                     } else {
                         sortRefresh(order, category, sortSearch)
+                        viewModel.onChangeSortBy(category)
+                        viewModel.onChangeSortOrder(order)
                         myDialog.dismiss()
                     }
                 }

@@ -16,15 +16,23 @@
             android:id="@+id/search"
             layout="@layout/item_layout_search" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAllWords"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/app_bg"
-            android:clipToPadding="false"
-            android:paddingHorizontal="@dimen/m"
-            android:paddingTop="@dimen/m"
-            android:paddingBottom="100dp" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAllWords"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_bg"
+                android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/m"
+                android:paddingTop="@dimen/m"
+                android:paddingBottom="100dp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
     <LinearLayout

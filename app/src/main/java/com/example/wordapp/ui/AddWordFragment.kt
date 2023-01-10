@@ -13,7 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.wordapp.MyApplication
 import com.example.wordapp.R
 import com.example.wordapp.databinding.FragmentAddEditWordBinding
-import com.example.wordapp.models.Word
+import com.example.wordapp.data.models.Word
 import com.example.wordapp.viewModels.AddWordViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.text.DateFormat

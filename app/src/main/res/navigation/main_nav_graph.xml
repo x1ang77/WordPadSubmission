@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_wordFragment"
             app:destination="@id/wordFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_dropdownFragment"
+            app:destination="@id/dropdownFragment" />
     </fragment>
     <fragment
         android:id="@+id/addWordFragment"
@@ -43,4 +46,9 @@
             android:name="id"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/dropdownFragment"
+        android:name="com.example.wordapp.ui.DropdownFragment"
+        android:label="fragment_dropdown"
+        tools:layout="@layout/fragment_dropdown" />
 </navigation>

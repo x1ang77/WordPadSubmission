@@ -1,8 +1,16 @@
 package com.example.wordapp.repository
 
-import com.example.wordapp.models.Word
+import com.example.wordapp.data.WordDao
+import com.example.wordapp.data.models.Word
 
+// try private constructor to see if it still works
 class WordRepository {
+//    suspend fun getWords(): List<Word> {
+//        return wordDao.getWords()
+//    }
+
+
+
     private var counter = -1L
     private val wordMap: MutableMap<Long, Word> = mutableMapOf()
 
@@ -37,19 +45,6 @@ class WordRepository {
     fun deleteWord(id: Long) {
         wordMap.remove(id)
     }
-
-//    fun sortWords(order: String, category: String): List<Word> {
-//        if (order == "Ascending" && category == "Word") {
-//            val res = wordMap.values.toList()
-//            return res.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.word })
-//        } else if (order == "Descending" && category == "Word") {
-//            val res = wordMap.values.toList()
-//            return res.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.word }).reversed()
-//        } else if (order == "Descending" && category == "Date") {
-//            return wordMap.values.toList().reversed()
-//        }
-//        return wordMap.values.toList()
-//    }
 
     companion object {
         private var wordRepository: WordRepository? = null

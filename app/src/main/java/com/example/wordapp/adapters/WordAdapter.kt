@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordapp.databinding.ItemLayoutWordBinding
-import com.example.wordapp.models.Word
+import com.example.wordapp.data.models.Word
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*

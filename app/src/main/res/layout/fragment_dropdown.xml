@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.DropdownFragment">
+
+    <include
+        android:id="@+id/dropdown"
+        layout="@layout/item_layout_dropdown" />
+
+    <include
+        android:id="@+id/dropdown2"
+        layout="@layout/item_layout_dropdown" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoComplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:hint="AutoComplete" />
+</LinearLayout>
