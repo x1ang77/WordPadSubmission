@@ -143,7 +143,7 @@ class NewWordFragment private constructor() : Fragment() {
     }
 
     fun sortrefresh(order:String,by:String) {
-        viewModel.sortWords(order,by)
+        viewModel.sortWord(order,by)
     }
 
     private fun setupAdapter() {

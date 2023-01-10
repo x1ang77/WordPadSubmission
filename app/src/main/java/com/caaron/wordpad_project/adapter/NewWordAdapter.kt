@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.caaron.wordpad_project.databinding.ItemLayoutFileBinding
-import com.caaron.wordpad_project.model.Word
+import com.caaron.wordpad_project.data.model.Word
 import java.io.File
 import java.util.*
 

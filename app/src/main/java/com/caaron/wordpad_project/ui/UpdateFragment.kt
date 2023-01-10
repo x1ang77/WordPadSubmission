@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.caaron.wordpad_project.MyApplication
 import com.caaron.wordpad_project.R
 import com.caaron.wordpad_project.databinding.FragmentUpdateBinding
-import com.caaron.wordpad_project.model.Word
+import com.caaron.wordpad_project.data.model.Word
 import com.caaron.wordpad_project.viewModels.EditDeleteViewModel
 
 class UpdateFragment : Fragment() {

@@ -3,8 +3,10 @@ package com.caaron.wordpad_project.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.caaron.wordpad_project.model.Word
+import androidx.lifecycle.viewModelScope
+import com.caaron.wordpad_project.data.model.Word
 import com.caaron.wordpad_project.repository.WordRepository
+import kotlinx.coroutines.launch
 
 class NewViewModel(val repo: WordRepository):ViewModel() {
     val words:MutableLiveData<List<Word>> = MutableLiveData()
@@ -14,15 +16,19 @@ class NewViewModel(val repo: WordRepository):ViewModel() {
     }
 
     fun getWords(str:String){
-        val res = repo.getWords(str,false)
+        viewModelScope.launch{
+        val res = repo.getWords(str)
         words.value = res.filter {
             !it.status
         }
+        }
     }
 
-    fun sortWords(order:String,by:String){
-        val res=repo.sortWord(order,by)
-        words.value=res.filter { !it.status}
+     fun sortWord(order:String, by:String){
+         viewModelScope.launch {
+             val res = repo.sortWord(order, by)
+             words.value = res.filter { !it.status }
+         }
     }
 
     class Provider(val repo:WordRepository): ViewModelProvider.Factory{

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.caaron.wordpad_project.MyApplication
 import com.caaron.wordpad_project.R
 import com.caaron.wordpad_project.databinding.FragmentAddBinding
-import com.caaron.wordpad_project.model.Word
+import com.caaron.wordpad_project.data.model.Word
 import com.caaron.wordpad_project.viewModels.AddViewModel
 import com.google.android.material.snackbar.Snackbar
 
