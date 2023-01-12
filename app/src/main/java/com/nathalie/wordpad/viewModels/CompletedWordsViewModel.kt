@@ -31,16 +31,20 @@ class CompletedWordsViewModel(
         sortOrder.value = storageService.getString(SortKey.SORT_ORDER.name)
     }
 
+
+    //when a radio btn is clicked, set sortBy.value to the value of that btn
     fun onChangeSortBy(value: String) {
         sortBy.value = value
         storageService.setString(SortKey.SORT_BY.name, value)
     }
 
+    //when a radio btn is clicked, set sortOrder.value to the value of that btn
     fun onChangeSortOrder(value: String) {
         sortOrder.value = value
         storageService.setString(SortKey.SORT_ORDER.name, value)
     }
 
+    //get words after a 3s delay
     fun onRefresh() {
         viewModelScope.launch {
             delay(3000)
@@ -49,6 +53,8 @@ class CompletedWordsViewModel(
         }
     }
 
+
+    //fetch words
     fun getWords(str: String) {
         viewModelScope.launch {
             val res = repo.getWords(str, true)
@@ -57,6 +63,8 @@ class CompletedWordsViewModel(
 
     }
 
+
+    //sort words according to ascending order, descending order, title and date
     fun sortWords(order: String, type: String, str: String) {
         viewModelScope.launch {
             var res = repo.getWords(str, true)

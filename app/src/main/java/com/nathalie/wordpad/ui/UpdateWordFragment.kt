@@ -37,7 +37,10 @@ class UpdateWordFragment : Fragment() {
         val navArgs: UpdateWordFragmentArgs by navArgs()
         var status = false
 
+        //find word that matches the id from navArgs
         viewModel.getWordById(navArgs.id)
+
+        //set the edit texts in this fragment to the word's title, meaning, synonyms and details
         viewModel.word.observe(viewLifecycleOwner) {
             status = it.status
             binding.run {
@@ -48,10 +51,12 @@ class UpdateWordFragment : Fragment() {
             }
         }
 
+        //when this btn is clicked go back to previous fragment
         binding.btnBack.setOnClickListener {
             NavHostFragment.findNavController(this).popBackStack()
         }
 
+        //when this btn is clicked, update word
         binding.btnAdd.setOnClickListener {
             val id = navArgs.id
             val title = binding.etTitle.text.toString()
@@ -59,6 +64,7 @@ class UpdateWordFragment : Fragment() {
             val synonym = binding.etSynonym.text.toString()
             val details = binding.etDetails.text.toString()
 
+            //check if every edt texts has value
             if (validate(title, meaning, synonym, details)) {
                 val word = Word(id, title, meaning, synonym, details, status)
                 viewModel.updateWord(id, word)

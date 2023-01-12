@@ -41,8 +41,11 @@ class DetailsFragment : Fragment() {
 
         val navArgs: DetailsFragmentArgs by navArgs()
 
+
+        //find word that matches the id passed from navArgs
         viewModel.getWordById(navArgs.id)
 
+        //display word;s title, meaning, details and synonym
         viewModel.word.observe(viewLifecycleOwner) {
             if (it.status) binding.btnDone.isVisible = false
             binding.run {
@@ -53,6 +56,7 @@ class DetailsFragment : Fragment() {
             }
         }
 
+        //when btn done is clicked, change word's status from 'false' to 'true'
         binding.btnDone.setOnClickListener {
             viewModel.changeStatus(navArgs.id)
             val bundle = Bundle()
@@ -61,11 +65,15 @@ class DetailsFragment : Fragment() {
             NavHostFragment.findNavController(this).popBackStack()
         }
 
+        //when this btn is clicked, go to update word fragment
         binding.btnUpdate.setOnClickListener {
             val action = DetailsFragmentDirections.actionDetailsToUpdateWord(navArgs.id)
             NavHostFragment.findNavController(this).navigate(action)
         }
 
+
+        //when this btn is clicked, a dialog will pop up and ask for confirmation to delete word
+        //if confirmed, word will be deleted. dialog will close is cancel btn is clicked
         binding.btnDelete.setOnClickListener {
             val bundle = Bundle()
             bundle.putBoolean("refresh", true)

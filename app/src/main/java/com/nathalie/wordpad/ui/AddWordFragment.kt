@@ -33,12 +33,15 @@ class AddWordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //when this btn is clicked, add word
         binding.btnAdd.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val meaning = binding.etMeaning.text.toString()
             val synonym = binding.etSynonym.text.toString()
             val details = binding.etDetails.text.toString()
 
+
+            //make sure every edit text has value in it
             if (validate(title, meaning, synonym, details)) {
                 viewModel.addWord(Word(null, title, meaning, synonym, details))
                 val bundle = Bundle()

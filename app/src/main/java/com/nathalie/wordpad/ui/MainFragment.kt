@@ -41,6 +41,8 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         var currentPage = 0
 
+
+        //fragments that will be shown in tab layout
         val adapter = ViewPagerAdapter(
             listOf(wordsFragment, completedWordsFragment),
             childFragmentManager,
@@ -49,7 +51,6 @@ class MainFragment : Fragment() {
 
         binding.vpWordPad.adapter = adapter
 
-
         binding.vpWordPad.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -57,7 +58,7 @@ class MainFragment : Fragment() {
             }
         })
 
-
+        //names on different tabs
         TabLayoutMediator(binding.tlWordPad, binding.vpWordPad) { tab, pos ->
             tab.text = when (pos) {
                 0 -> "New Word"
@@ -65,22 +66,27 @@ class MainFragment : Fragment() {
             }
         }.attach()
 
+        //show drop down then this btn is clicked
         binding.fabGoToDropdown.setOnClickListener {
             val action = MainFragmentDirections.actionMainFragmentToDropDownFragment()
             NavHostFragment.findNavController(this).navigate(action)
         }
 
+
+        //this comes from add item fragment, refresh the page and fetch words
         setFragmentResultListener("from_add_item") { _, result ->
             val refresh = result.getBoolean("refresh")
             viewModel.shouldRefreshWords(refresh)
         }
 
+        //this comes from edit fragment, refresh the page and fetch words
         setFragmentResultListener("from_edit") { _, result ->
             val refresh = result.getBoolean("refresh")
             viewModel.shouldRefreshWords(refresh)
             viewModel.shouldRefreshCompletedWords(refresh)
         }
 
+        ///this comes from details fragment, refresh the page and fetch words
         setFragmentResultListener("from_details") { _, result ->
             val refresh = result.getBoolean("refresh")
             viewModel.shouldRefreshWords(refresh)

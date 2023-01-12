@@ -8,6 +8,7 @@ import com.nathalie.wordpad.data.Model.Word
 import com.nathalie.wordpad.repository.WordRepository
 import kotlinx.coroutines.launch
 
+//add word
 class AddWordViewModel(private val repo: WordRepository) : ViewModel() {
     fun addWord(word: Word) {
         viewModelScope.launch {

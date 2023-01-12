@@ -62,30 +62,37 @@ class CompletedWordsFragment : Fragment() {
         val dialogBinding = SortDialogBinding.inflate(layoutInflater)
         val myDialog = Dialog(requireContext(), R.style.WordPad_AlertDialog)
 
+        //determine which radio button is selected, "Title" or "Date"
         viewModel.sortBy.observe(viewLifecycleOwner) {
             dialogBinding.btnTitle.isChecked = it === SortBy.TITLE.name
             dialogBinding.btnDate.isChecked = it === SortBy.DATE.name
-
         }
+
+        //determine which radio button is selected, "asc" or "dsc"
         viewModel.sortOrder.observe(viewLifecycleOwner) {
             dialogBinding.btnAsc.isChecked = it === SortOrder.ASC.name
             dialogBinding.btnDsc.isChecked = it === SortOrder.DSC.name
         }
 
+        //when refresh set texh in search bar to be empty
         binding.srlRefresh.setOnRefreshListener {
             viewModel.onRefresh()
             binding.search.etSearch.setText("")
         }
 
+        //stop refreshing after refresh once
         viewModel.swipeRefreshLayoutFinished.asLiveData()
             .observe(viewLifecycleOwner) {
                 binding.srlRefresh.isRefreshing = false
             }
 
+        //navigate to add item fragment
         binding.efabAddNewItem.setOnClickListener {
             val action = MainFragmentDirections.actionMainToAddWord()
             NavHostFragment.findNavController(this).navigate(action)
         }
+
+        //show "No words yet" icon and text when there's no words
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
             binding.llEmpty.isVisible = adapter.itemCount <= 0
@@ -98,11 +105,13 @@ class CompletedWordsFragment : Fragment() {
             }
         }
 
+        //when search btn is clicked, filter words according to the words in search bar
         binding.search.btnSearch.setOnClickListener {
             val search = binding.search.etSearch.text.toString()
             refresh(search)
         }
 
+        //sort dialog pops out when sort btn is clicked
         binding.search.btnSort.setOnClickListener {
             myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
@@ -147,13 +156,14 @@ class CompletedWordsFragment : Fragment() {
         }
     }
 
-
+    //fetch words
     fun refresh(str: String) {
         lifecycleScope.launchWhenResumed {
             viewModel.getWords(str)
         }
     }
 
+    //adapter for words
     fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = WordAdapter(emptyList()) {

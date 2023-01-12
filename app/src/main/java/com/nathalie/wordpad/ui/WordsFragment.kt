@@ -63,35 +63,42 @@ class WordsFragment : Fragment() {
 
         setupAdapter()
 
+        //determine which radio button is selected, "Title" or "Date"
         viewModel.sortBy.observe(viewLifecycleOwner) {
             dialogBinding.btnTitle.isChecked = it === SortBy.TITLE.name
             dialogBinding.btnDate.isChecked = it === SortBy.DATE.name
-
         }
+
+        //determine which radio button is selected, "asc" or "dsc"
         viewModel.sortOrder.observe(viewLifecycleOwner) {
             dialogBinding.btnAsc.isChecked = it === SortOrder.ASC.name
             dialogBinding.btnDsc.isChecked = it === SortOrder.DSC.name
         }
 
+        //when refresh set texh in search bar to be empty
         binding.srlRefresh.setOnRefreshListener {
             viewModel.onRefresh()
             binding.search.etSearch.setText("")
         }
 
+        //stop refreshing after refresh once
         viewModel.swipeRefreshLayoutFinished.asLiveData()
             .observe(viewLifecycleOwner) {
                 binding.srlRefresh.isRefreshing = false
             }
 
+        //navigate to add item fragment
         binding.efabAddNewItem.setOnClickListener {
             val action = MainFragmentDirections.actionMainToAddWord()
             NavHostFragment.findNavController(this).navigate(action)
         }
 
+        //show "No words yet" icon and text when there's no words
         viewModel.words.observe(viewLifecycleOwner) {
             adapter.setWords(it)
             binding.llEmpty.isVisible = adapter.itemCount <= 0
         }
+
 
         mainViewModel.refreshWords.observe(viewLifecycleOwner) {
             if (it) {
@@ -100,11 +107,13 @@ class WordsFragment : Fragment() {
             }
         }
 
+        //when search btn is clicked, filter words according to the words in search bar
         binding.search.btnSearch.setOnClickListener {
             search = binding.search.etSearch.text.toString()
             refresh(search)
         }
 
+       //sort dialog pops out when sort btn is clicked
         binding.search.btnSort.setOnClickListener {
             myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
@@ -133,6 +142,7 @@ class WordsFragment : Fragment() {
             myDialog.setCancelable(true)
             myDialog.show()
 
+            //when done btn is clicked inside sort dialog, set sortOrder and sortBy according to the radio btns that are selected
             dialogBinding.btnDone.setOnClickListener {
                 if (dialogBinding.radioGroup.checkedRadioButtonId == -1
                     || dialogBinding.radioGroup2.checkedRadioButtonId == -1
@@ -149,10 +159,12 @@ class WordsFragment : Fragment() {
         }
     }
 
+    //fetch words
     fun refresh(str: String) {
         viewModel.getWords(str)
     }
 
+    //adapter for words
     fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = WordAdapter(emptyList()) {

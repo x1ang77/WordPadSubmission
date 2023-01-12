@@ -19,6 +19,7 @@ class WordAdapter(
 
     override fun onBindViewHolder(holder: ItemWordHolder, position: Int) {
         val item = items[position]
+        //display word's title, meaning and date
         holder.binding.run {
             tvTitle.text = item.title
             tvMeaning.text = item.meaning
@@ -30,10 +31,12 @@ class WordAdapter(
         }
     }
 
+    //get the size of items
     override fun getItemCount(): Int {
         return items.size
     }
 
+    //set words with items
     fun setWords(items: List<Word>) {
         this.items = items
         notifyDataSetChanged()

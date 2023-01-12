@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 class DetailsViewModel(private val repo: WordRepository) : ViewModel() {
     val word: MutableLiveData<Word> = MutableLiveData()
 
+    //find word that matches the id
     fun getWordById(id: Long) {
         viewModelScope.launch {
             val res = repo.getWordById(id)
@@ -21,12 +22,14 @@ class DetailsViewModel(private val repo: WordRepository) : ViewModel() {
 
     }
 
+    //delete word that matches the id
     fun deleteWord(id: Long) {
         viewModelScope.launch {
             repo.deleteWord(id)
         }
     }
 
+    //change status of word that matches the id
     fun changeStatus(id: Long) {
         viewModelScope.launch {
             repo.updateStatus(id)
