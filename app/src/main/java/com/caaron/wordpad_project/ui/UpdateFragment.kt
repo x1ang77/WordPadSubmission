@@ -45,6 +45,7 @@ class UpdateFragment : Fragment() {
             }
         }
 
+        //This onClick function is to submit the form of updating the word you selecting
         binding.btnUpdate.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val meaning = binding.etMeaning.text.toString()

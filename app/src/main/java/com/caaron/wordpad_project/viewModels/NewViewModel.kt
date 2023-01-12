@@ -15,6 +15,7 @@ class NewViewModel(val repo: WordRepository):ViewModel() {
         getWords("")
     }
 
+    //This function provide to getWord Fragment's UI the access to data from repository
     fun getWords(str:String){
         viewModelScope.launch{
         val res = repo.getWords(str)
@@ -24,6 +25,7 @@ class NewViewModel(val repo: WordRepository):ViewModel() {
         }
     }
 
+    //This function provide to sortWord Fragment's UI the access to data from repository
      fun sortWord(order:String, by:String){
          viewModelScope.launch {
              val res = repo.sortWord(order, by)

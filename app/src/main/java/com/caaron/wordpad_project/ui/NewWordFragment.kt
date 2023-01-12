@@ -48,6 +48,7 @@ class NewWordFragment private constructor() : Fragment() {
 
         setupAdapter()
 
+        //This onClick function allow you to navigate from main fragment to add fragment
         binding.efabAddNew.setOnClickListener {
             val action = MainFragmentDirections.actionMainToAdd()
             NavHostFragment.findNavController(this).navigate(action)
@@ -87,34 +88,7 @@ class NewWordFragment private constructor() : Fragment() {
             }
         })
 
-//        binding.search.btnSort.setOnClickListener {
-//            val alertBuilder = AlertDialog.Builder(requireContext(), R.style.Sort_popup)
-//            val view = ItemLayoutAlertBinding.inflate(layoutInflater, null, false)
-//            alertBuilder.setView(view.root)
-//            alertBuilder.create().show()
-//            view.sort.setOnClickListener {
-//                val dialogBinding = layoutInflater.inflate(R.layout.item_layout_alert,null)
-//
-//                val myDialog = Dialog(requireContext())
-//                myDialog.setContentView(dialogBinding)
-//                myDialog.setCancelable(true)
-//                myDialog.show()
-//                myDialog.findViewById<Button>(R.id.sort).setOnClickListener {
-//                    val rg=myDialog.findViewById<RadioGroup>(R.id.radioGroup1)
-//                    val rg2=myDialog.findViewById<RadioGroup>(R.id.radioGroup2)
-//                    val radioId=rg.checkedRadioButtonId
-//                    val radioId2 = rg2.checkedRadioButtonId
-//                    val radioButton1 = myDialog.findViewById<RadioButton>(radioId)
-//                    val radioButton2 = myDialog.findViewById<RadioButton>(radioId2)
-//                    val radioButtonText1 = radioButton1.text
-//                    val radioButtonText2 = radioButton2.text
-//                    Log.d("idkwtfimdoing","$radioButtonText1,$radioButtonText2")
-//                    sortrefresh(radioButtonText1.toString(),radioButtonText2.toString())
-//                    myDialog.hide()
-//                }
-//            }
-//        }
-
+        //This onClick function allow you to sort the word by selecting the ratio
         binding.search.btnSort.setOnClickListener{
             val dialogBinding = layoutInflater.inflate(R.layout.item_layout_alert,null,false)
 
@@ -138,14 +112,18 @@ class NewWordFragment private constructor() : Fragment() {
         }
     }
 
+    //This refresh function is to keep updating the word from application
     fun refresh(str: String) {
         viewModel.getWords(str)
     }
 
+    //This sortRefresh function is to keep updating the word from application when you sorted
     fun sortrefresh(order:String,by:String) {
         viewModel.sortWord(order,by)
     }
 
+    //This function is for the recycle view by creating a new instance of completedWord,
+    //passing an empty list and a lambda function
     private fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = NewWordAdapter(emptyList()) {
@@ -170,6 +148,7 @@ class NewWordFragment private constructor() : Fragment() {
     companion object {
         private var newWordFragmentInstance: NewWordFragment? = null
 
+        //This function allow the fragment to behave as a singleton
         fun getInstance(): NewWordFragment {
             if (newWordFragmentInstance == null) {
                 newWordFragmentInstance = NewWordFragment()

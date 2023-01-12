@@ -15,6 +15,7 @@ import com.caaron.wordpad_project.data.model.Word
 import com.caaron.wordpad_project.viewModels.AddViewModel
 import com.google.android.material.snackbar.Snackbar
 
+//This class is to handles the logic for adding a new word to the application
 class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
     private val viewModel: AddViewModel by viewModels {
@@ -29,9 +30,11 @@ class AddFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //This onClick function is to submit the form of creating a new word
         binding.btnAdd.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val meaning = binding.etMeaning.text.toString()

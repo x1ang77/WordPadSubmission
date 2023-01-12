@@ -14,6 +14,9 @@ import com.caaron.wordpad_project.databinding.FragmentMainBinding
 import com.caaron.wordpad_project.viewModels.MainViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
+// This class creates a view using data binding and a view model,
+// and handles the logic for displaying a view pager with two fragments,
+// one for new words and one for completed words.
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private val newWordFragment = NewWordFragment.getInstance()

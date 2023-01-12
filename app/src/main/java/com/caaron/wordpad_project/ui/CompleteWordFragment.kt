@@ -58,6 +58,8 @@ class CompleteWordFragment private constructor() : Fragment() {
 //            val search = binding.search.etSearch.text.toString()
 //            refresh(search)
 //        }
+
+        //This onQuery function is to find the word from the string and search the word from the application
         binding.search.etSearch.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
             override  fun onQueryTextSubmit(p0:String?): Boolean{
                 p0?.let{
@@ -77,10 +79,14 @@ class CompleteWordFragment private constructor() : Fragment() {
         binding.efabAddNew.visibility = View.GONE
     }
 
+    //This refresh function is to keep updating the word from application
     fun refresh(str: String) {
         viewModel.getCompletedWords(str)
     }
 
+
+    //This function is for the recycle view by creating a new instance of completedWord,
+    //passing an empty list and a lambda function
     private fun setupAdapter() {
         val layoutManager = LinearLayoutManager(requireContext())
         adapter = NewWordAdapter(emptyList()) {
@@ -100,6 +106,7 @@ class CompleteWordFragment private constructor() : Fragment() {
     companion object {
         private var completeWordFragmentInstance: CompleteWordFragment? = null
 
+        //This function allow the fragment to behave as a singleton
         fun getInstance(): CompleteWordFragment {
             if (completeWordFragmentInstance == null) {
                 completeWordFragmentInstance = CompleteWordFragment()

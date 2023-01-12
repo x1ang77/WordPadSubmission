@@ -36,7 +36,6 @@ class NewWordAdapter(
 
     override fun getItemCount() = words.size
 
-//    @JvmName("setWords1")
     fun setWords(items: List<Word>) {
         this.words = items
         notifyDataSetChanged()

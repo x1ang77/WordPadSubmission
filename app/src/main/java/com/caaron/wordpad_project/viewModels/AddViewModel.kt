@@ -8,6 +8,8 @@ import com.caaron.wordpad_project.repository.WordRepository
 import kotlinx.coroutines.launch
 
 class AddViewModel(private val repo: WordRepository) : ViewModel() {
+
+    //This function provide to addWord Fragment's UI the access to data from repository
     fun addWord(word: Word) {
         viewModelScope.launch {
             repo.addWord(word)

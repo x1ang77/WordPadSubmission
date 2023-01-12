@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 class EditDeleteViewModel(private val repo: WordRepository) : ViewModel() {
     val word: MutableLiveData<Word> = MutableLiveData()
 
+    //This function provide to getWordById Fragment's UI the access to data from repository
     fun getWordById(id: Long) {
         viewModelScope.launch {
             repo.getWordById(id)
@@ -21,6 +22,7 @@ class EditDeleteViewModel(private val repo: WordRepository) : ViewModel() {
         }
     }
 
+    //This function provide to updateWord Fragment's UI the access to data from repository
     fun updateWord(id: Long, word: Word) {
         viewModelScope.launch {
             repo.updateWord(id, word)

@@ -11,6 +11,9 @@ class MyApplication: Application() {
 
     lateinit var wordRepo: WordRepository
 
+    //It creates a Room database for storing words,
+    // and an instance of the WordRepository class which handle all the interactions with the database.
+    // It also has a fallbackToDestructiveMigration() method to rebuild the database if the schema changes.
     override fun onCreate() {
         super.onCreate()
         val wordDatabase = Room.databaseBuilder(

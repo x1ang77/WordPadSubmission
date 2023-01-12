@@ -15,6 +15,7 @@ class CompletedViewModel(val repo: WordRepository) : ViewModel() {
         getCompletedWords("")
     }
 
+    //This function provide to completedWord Fragment's UI the access to data from repository
     fun getCompletedWords(str: String) {
         viewModelScope.launch {
             val res = repo.getWords(str)

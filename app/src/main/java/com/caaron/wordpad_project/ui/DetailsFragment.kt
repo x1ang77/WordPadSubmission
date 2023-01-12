@@ -54,6 +54,7 @@ class DetailsFragment : Fragment() {
             }
         }
 
+        //This onClick function is to submit the form of updating the word you selecting
         binding.btnUpdate.setOnClickListener {
             val action = DetailsFragmentDirections.actionDetailsToUpdate(
                 navArgs.id,
@@ -65,6 +66,7 @@ class DetailsFragment : Fragment() {
             NavHostFragment.findNavController(this).navigate(action)
         }
 
+        //This onClick function is to move the word to completed word
         binding.btnDone.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext(), R.style.DataBinding_AlertDialog)
                 .setTitle("Are you sure?")
@@ -82,6 +84,7 @@ class DetailsFragment : Fragment() {
                 .show()
         }
 
+        //This onClick function is to delete the word
         binding.btnDelete.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext(), R.style.DataBinding_AlertDialog)
                 .setTitle("Are you sure?")
