@@ -58,10 +58,10 @@ class HomeFragment : Fragment() {
             }
         }.attach()
 
-        binding.fabGoToDropdown.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToDropdownFragment()
-            NavHostFragment.findNavController(this).navigate(action)
-        }
+//        binding.fabGoToDropdown.setOnClickListener {
+//            val action = HomeFragmentDirections.actionHomeFragmentToDropdownFragment()
+//            NavHostFragment.findNavController(this).navigate(action)
+//        }
 
         setFragmentResults()
     }

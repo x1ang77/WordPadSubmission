@@ -26,12 +26,12 @@
             app:tabTextColor="@color/white" />
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fabGoToDropdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="40dp"
-        app:icon="@drawable/ic_add" />
+<!--    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+<!--        android:id="@+id/fabGoToDropdown"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginBottom="40dp"-->
+<!--        app:icon="@drawable/ic_add" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

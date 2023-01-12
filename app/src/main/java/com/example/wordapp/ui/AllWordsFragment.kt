@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.SearchView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -20,22 +20,18 @@ import com.example.wordapp.R
 import com.example.wordapp.adapters.WordAdapter
 import com.example.wordapp.databinding.FragmentAllWordsBinding
 import com.example.wordapp.databinding.SortDialogBinding
-import com.example.wordapp.data.models.SortBy
-import com.example.wordapp.data.models.SortKey
+import com.example.wordapp.data.models.SortCategory
 import com.example.wordapp.data.models.SortOrder
 import com.example.wordapp.viewModels.AllWordsViewModel
 import com.example.wordapp.viewModels.HomeViewModel
-import com.google.android.material.snackbar.Snackbar
 
 class AllWordsFragment : Fragment() {
     private lateinit var binding: FragmentAllWordsBinding
     private lateinit var adapter: WordAdapter
-    var order = ""
-    var category = ""
-
     private val viewModel: AllWordsViewModel by viewModels {
-//        (requireActivity().application as MyApplication for wordRepo
         AllWordsViewModel.Provider(
+//            both methods work for Provider
+//            (requireActivity().application as MyApplication).wordRepo,
             (requireContext().applicationContext as MyApplication).wordRepo,
             (requireActivity().application as MyApplication).storageService
         )
@@ -43,6 +39,9 @@ class AllWordsFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
+    private var order = ""
+    private var category = ""
+    private var emptyQuery = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,9 +59,9 @@ class AllWordsFragment : Fragment() {
         val dialogBinding = SortDialogBinding.inflate(layoutInflater)
         val myDialog = Dialog(requireContext(), R.style.Custom_AlertDialog)
         myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        viewModel.sortBy.observe(viewLifecycleOwner) {
-            dialogBinding.rbWord.isChecked = it == SortBy.WORD.name
-            dialogBinding.rbDate.isChecked = it == SortBy.DATE.name
+        viewModel.sortCategory.observe(viewLifecycleOwner) {
+            dialogBinding.rbWord.isChecked = it == SortCategory.WORD.name
+            dialogBinding.rbDate.isChecked = it == SortCategory.DATE.name
             category = it
         }
 
@@ -74,7 +73,8 @@ class AllWordsFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.onSwipeRefresh()
-            binding.search.etSearch.setText("")
+//            binding.search.etSearch.setText("")
+//            binding.search.svSearch.query
 //            queryempty, true
         }
 
@@ -90,62 +90,78 @@ class AllWordsFragment : Fragment() {
 
         homeViewModel.refreshAllWords.observe(viewLifecycleOwner) {
             if (it) {
-                refresh()
+                refresh("")
                 homeViewModel.doRefreshAllWords(false)
             }
         }
 
         binding.run {
-            search.etSearch.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    search.ibCancel.isVisible = true
-                }
-            }
-
-            search.ibCancel.setOnClickListener {
-                viewModel.getWords("")
-                search.ibCancel.isVisible = false
-                search.etSearch.clearFocus()
-                search.etSearch.text.clear()
-                sortSearch = ""
-
-                if (viewModel.words.value?.size == 0) {
-                    binding.llEmpty.isGone = false
-                    binding.tvLine1.text = "No word(s) of the day."
-                    binding.tvLine2.text = "Add a word today."
-                } else {
-                    binding.llEmpty.isGone = true
-                }
-            }
-
-            search.ibSearch.setOnClickListener {
-                search.ibCancel.isVisible = false
-                search.etSearch.clearFocus()
-                val search = search.etSearch.text.trim().toString()
-                viewModel.getWords(search)
-                viewModel.query = search
-                sortSearch = search
-
-                if (viewModel.words.value?.size == 0) {
-                    binding.llEmpty.isGone = false
-                    binding.tvLine1.text = "No matching result found for \"${search}\"."
-                    binding.tvLine2.text = ""
+            search.svSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    p0?.let {
+                        refresh(it)
+                    }
+                    return false
                 }
 
-                val snackBar =
-                    Snackbar.make(
-                        it,
-                        "${viewModel.words.value?.size} match(s) found",
-                        Snackbar.LENGTH_LONG
-                    )
-                snackBar.setBackgroundTint(
-                    ContextCompat.getColor(requireContext(), R.color.blue_900)
-                )
-                snackBar.setAction("Hide") {
-                    snackBar.dismiss()
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    p0?.let {
+                        refresh(it)
+                    }
+                    return false
                 }
-                snackBar.show()
-            }
+            })
+
+//            search.etSearch.setOnFocusChangeListener { _, hasFocus ->
+//                if (hasFocus) {
+//                    search.ibCancel.isVisible = true
+//                }
+//            }
+//
+//            search.ibCancel.setOnClickListener {
+//                viewModel.getWords("")
+//                search.ibCancel.isVisible = false
+//                search.etSearch.clearFocus()
+//                search.etSearch.text.clear()
+//                sortSearch = ""
+//
+//                if (viewModel.words.value?.size == 0) {
+//                    binding.llEmpty.isGone = false
+//                    binding.tvLine1.text = "No word(s) of the day."
+//                    binding.tvLine2.text = "Add a word today."
+//                } else {
+//                    binding.llEmpty.isGone = true
+//                }
+//            }
+
+//            search.ibSearch.setOnClickListener {
+//                search.ibCancel.isVisible = false
+//                search.etSearch.clearFocus()
+//                val search = search.etSearch.text.trim().toString()
+//                viewModel.getWords(search)
+//                viewModel.query = search
+//                sortSearch = search
+//
+//                if (viewModel.words.value?.size == 0) {
+//                    binding.llEmpty.isGone = false
+//                    binding.tvLine1.text = "No matching result found for \"${search}\"."
+//                    binding.tvLine2.text = ""
+//                }
+//
+//                val snackBar =
+//                    Snackbar.make(
+//                        it,
+//                        "${viewModel.words.value?.size} match(s) found",
+//                        Snackbar.LENGTH_LONG
+//                    )
+//                snackBar.setBackgroundTint(
+//                    ContextCompat.getColor(requireContext(), R.color.blue_900)
+//                )
+//                snackBar.setAction("Hide") {
+//                    snackBar.dismiss()
+//                }
+//                snackBar.show()
+//            }
 
             fabAdd.setOnClickListener {
                 val directory = HomeFragmentDirections.actionHomeFragmentToAddWordFragment()
@@ -167,10 +183,10 @@ class AllWordsFragment : Fragment() {
                 dialogBinding.radioGroup2.setOnCheckedChangeListener { _, id ->
                     category = when (id) {
                         R.id.rbWord -> {
-                            SortBy.WORD.name
+                            SortCategory.WORD.name
                         }
                         else -> {
-                            SortBy.DATE.name
+                            SortCategory.DATE.name
                         }
                     }
                 }
@@ -204,9 +220,13 @@ class AllWordsFragment : Fragment() {
         binding.rvAllWords.layoutManager = layoutManager
     }
 
-    private fun refresh() {
-        viewModel.getWords("")
+    private fun refresh(str: String) {
+        viewModel.getWords(str)
     }
+
+//    private fun refresh() {
+//        viewModel.getWords("")
+//    }
 
     private fun sortRefresh(order: String, category: String, str: String) {
         viewModel.sortWords(order, category, str)

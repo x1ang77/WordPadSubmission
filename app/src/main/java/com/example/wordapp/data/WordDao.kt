@@ -20,6 +20,9 @@ interface WordDao {
     @Query("DELETE FROM word WHERE id = :id")
     suspend fun delete(id: Long)
 
-    @Query("SELECT * FROM word WHERE word LIKE :word")
-    suspend fun getWordByWord(word: String): List<Word>
+    @Query("UPDATE word SET status = :status WHERE id = :id")
+    suspend fun updateStatusById(id: Long, status: Boolean)
+
+    @Query("SELECT * FROM word WHERE word LIKE '%'|| :word ||'%'")
+    suspend fun getWordsBySearch(word: String): List<Word>
 }

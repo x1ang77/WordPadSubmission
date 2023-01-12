@@ -8,16 +8,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wordapp.MyApplication
 import com.example.wordapp.R
 import com.example.wordapp.adapters.WordAdapter
+import com.example.wordapp.data.models.SortCategory
+import com.example.wordapp.data.models.SortOrder
 import com.example.wordapp.databinding.FragmentCompletedWordsBinding
 import com.example.wordapp.databinding.SortDialogBinding
 import com.example.wordapp.viewModels.CompletedWordsViewModel
@@ -28,11 +32,17 @@ class CompletedWordsFragment : Fragment() {
     private lateinit var binding: FragmentCompletedWordsBinding
     private lateinit var adapter: WordAdapter
     private val viewModel: CompletedWordsViewModel by viewModels {
-        CompletedWordsViewModel.Provider((requireContext().applicationContext as MyApplication).wordRepo)
+        CompletedWordsViewModel.Provider(
+            (requireContext().applicationContext as MyApplication).wordRepo,
+            (requireActivity().application as MyApplication).storageService
+        )
     }
     private val homeViewModel: HomeViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
+    private var order = ""
+    private var category = ""
+    private var emptyQuery = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +57,29 @@ class CompletedWordsFragment : Fragment() {
 
         setupAdapter()
 
-        var sortSearch = ""
+        val dialogBinding = SortDialogBinding.inflate(layoutInflater)
+        val myDialog = Dialog(requireContext(), R.style.Custom_AlertDialog)
+        myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        viewModel.sortCategory.observe(viewLifecycleOwner) {
+            dialogBinding.rbWord.isChecked = it == SortCategory.WORD.name
+            dialogBinding.rbDate.isChecked = it == SortCategory.DATE.name
+            category = it
+        }
+
+        viewModel.sortOrder.observe(viewLifecycleOwner) {
+            dialogBinding.rbAsc.isChecked = it == SortOrder.ASC.name
+            dialogBinding.rbDsc.isChecked = it == SortOrder.DSC.name
+            order = it
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.onSwipeRefresh()
+        }
+
+        viewModel.swipeRefreshLayoutFinished.asLiveData().observe(viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
         viewModel.words.observe(viewLifecycleOwner) { words ->
             binding.llEmpty.isGone = words.isNotEmpty()
             adapter.setWords(words)
@@ -55,68 +87,81 @@ class CompletedWordsFragment : Fragment() {
 
         homeViewModel.refreshCompletedWords.observe(viewLifecycleOwner) {
             if (it) {
-                refresh()
+                refresh("")
                 homeViewModel.doRefreshCompletedWords(false)
             }
         }
 
         binding.run {
-            search.etSearch.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    search.ibCancel.isVisible = true
-                }
-            }
-
-            search.ibCancel.setOnClickListener {
-                viewModel.getWords("")
-                search.ibCancel.isVisible = false
-                search.etSearch.clearFocus()
-                search.etSearch.text.clear()
-                sortSearch = ""
-
-                if (viewModel.words.value?.size == 0) {
-                    binding.llEmpty.isGone = false
-                    binding.tvLine1.text = "No words learned yet."
-                    binding.tvLine2.text = "Start today."
-                } else {
-                    binding.llEmpty.isGone = true
-                }
-            }
-
-            search.ibSearch.setOnClickListener {
-                search.ibCancel.isVisible = false
-                search.etSearch.clearFocus()
-                val search = search.etSearch.text.trim().toString()
-                viewModel.getWords(search)
-                sortSearch = search
-
-                if (viewModel.words.value?.size == 0) {
-                    binding.llEmpty.isGone = false
-                    binding.tvLine1.text = "No matching result found for \"${search}\"."
-                    binding.tvLine2.text = ""
+            search.svSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    p0?.let {
+                        refresh(it)
+                        emptyQuery = it
+                    }
+                    return false
                 }
 
-                val snackBar =
-                    Snackbar.make(
-                        it,
-                        "${viewModel.words.value?.size} match(s) found",
-                        Snackbar.LENGTH_LONG
-                    )
-                snackBar.setBackgroundTint(
-                    ContextCompat.getColor(requireContext(), R.color.blue_900)
-                )
-                snackBar.setAction("Hide") {
-                    snackBar.dismiss()
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    p0?.let {
+                        refresh(it)
+                        emptyQuery = it
+                    }
+                    return false
                 }
-                snackBar.show()
-            }
+            })
+
+//            search.etSearch.setOnFocusChangeListener { _, hasFocus ->
+//                if (hasFocus) {
+//                    search.ibCancel.isVisible = true
+//                }
+//            }
+//
+//            search.ibCancel.setOnClickListener {
+//                viewModel.getWords("")
+//                search.ibCancel.isVisible = false
+//                search.etSearch.clearFocus()
+//                search.etSearch.text.clear()
+//                sortSearch = ""
+//
+//                if (viewModel.words.value?.size == 0) {
+//                    binding.llEmpty.isGone = false
+//                    binding.tvLine1.text = "No words learned yet."
+//                    binding.tvLine2.text = "Start today."
+//                } else {
+//                    binding.llEmpty.isGone = true
+//                }
+//            }
+//
+//            search.ibSearch.setOnClickListener {
+//                search.ibCancel.isVisible = false
+//                search.etSearch.clearFocus()
+//                val search = search.etSearch.text.trim().toString()
+//                viewModel.getWords(search)
+//                sortSearch = search
+//
+//                if (viewModel.words.value?.size == 0) {
+//                    binding.llEmpty.isGone = false
+//                    binding.tvLine1.text = "No matching result found for \"${search}\"."
+//                    binding.tvLine2.text = ""
+//                }
+//
+//                val snackBar =
+//                    Snackbar.make(
+//                        it,
+//                        "${viewModel.words.value?.size} match(s) found",
+//                        Snackbar.LENGTH_LONG
+//                    )
+//                snackBar.setBackgroundTint(
+//                    ContextCompat.getColor(requireContext(), R.color.blue_900)
+//                )
+//                snackBar.setAction("Hide") {
+//                    snackBar.dismiss()
+//                }
+//                snackBar.show()
+//            }
 
             search.ibSort.setOnClickListener {
-                var order = ""
-                var category = ""
-                val dialogBinding = SortDialogBinding.inflate(layoutInflater)
-                val myDialog = Dialog(requireContext(), R.style.Custom_AlertDialog)
-                myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
                     order = when (id) {
                         R.id.rbAsc -> {
@@ -148,7 +193,7 @@ class CompletedWordsFragment : Fragment() {
                     ) {
                         dialogBinding.tvWarning.isVisible = true
                     } else {
-                        sortRefresh(order, category, sortSearch)
+                        sortRefresh(order, category, emptyQuery)
                         myDialog.dismiss()
                     }
                 }
@@ -166,8 +211,8 @@ class CompletedWordsFragment : Fragment() {
         binding.rvCompletedWords.layoutManager = layoutManager
     }
 
-    private fun refresh() {
-        viewModel.getWords("")
+    private fun refresh(str: String) {
+        viewModel.getWords(str)
     }
 
     private fun sortRefresh(order: String, category: String, str: String) {

@@ -15,13 +15,22 @@
             android:id="@+id/search"
             layout="@layout/item_layout_search" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCompletedWords"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/app_bg"
-            android:clipToPadding="false"
-            android:padding="@dimen/m" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCompletedWords"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_bg"
+                android:clipToPadding="false"
+                android:padding="@dimen/m" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
     <LinearLayout

@@ -1,5 +1,5 @@
 package com.example.wordapp.data.models
 
 enum class SortKey {
-    SORT_BY, SORT_ORDER
+    SORT_CATEGORY, SORT_ORDER
 }

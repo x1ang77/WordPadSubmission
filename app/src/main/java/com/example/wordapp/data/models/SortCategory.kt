@@ -1,5 +1,5 @@
 package com.example.wordapp.data.models
 
-enum class SortBy {
+enum class SortCategory {
     WORD, DATE
 }
