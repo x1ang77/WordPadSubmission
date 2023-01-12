@@ -5,17 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.wordapp.adapters.HomeAdapter
 import com.example.wordapp.databinding.FragmentHomeBinding
-import com.example.wordapp.utils.Dropdown
 import com.example.wordapp.viewModels.HomeViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
+// This is a fragment class, and it holds the data for the UI of Home Fragment.
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val allWordsFragment = AllWordsFragment.getInstance()
@@ -66,6 +64,7 @@ class HomeFragment : Fragment() {
         setFragmentResults()
     }
 
+    // This is a private function that groups all the setFragmentResultListener functions.
     private fun setFragmentResults() {
         setFragmentResultListener("result_from_add_word") { _, result ->
             val refresh = result.getBoolean("refresh")

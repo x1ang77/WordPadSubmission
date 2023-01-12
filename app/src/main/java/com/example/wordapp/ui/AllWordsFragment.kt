@@ -25,6 +25,7 @@ import com.example.wordapp.data.models.SortOrder
 import com.example.wordapp.viewModels.AllWordsViewModel
 import com.example.wordapp.viewModels.HomeViewModel
 
+// This is a fragment class, and it holds the data for the UI of All Words Fragment.
 class AllWordsFragment : Fragment() {
     private lateinit var binding: FragmentAllWordsBinding
     private lateinit var adapter: WordAdapter
@@ -73,9 +74,6 @@ class AllWordsFragment : Fragment() {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.onSwipeRefresh()
-//            binding.search.etSearch.setText("")
-//            binding.search.svSearch.query
-//            queryempty, true
         }
 
         viewModel.swipeRefreshLayoutFinished.asLiveData().observe(viewLifecycleOwner) {
@@ -111,57 +109,6 @@ class AllWordsFragment : Fragment() {
                     return false
                 }
             })
-
-//            search.etSearch.setOnFocusChangeListener { _, hasFocus ->
-//                if (hasFocus) {
-//                    search.ibCancel.isVisible = true
-//                }
-//            }
-//
-//            search.ibCancel.setOnClickListener {
-//                viewModel.getWords("")
-//                search.ibCancel.isVisible = false
-//                search.etSearch.clearFocus()
-//                search.etSearch.text.clear()
-//                sortSearch = ""
-//
-//                if (viewModel.words.value?.size == 0) {
-//                    binding.llEmpty.isGone = false
-//                    binding.tvLine1.text = "No word(s) of the day."
-//                    binding.tvLine2.text = "Add a word today."
-//                } else {
-//                    binding.llEmpty.isGone = true
-//                }
-//            }
-
-//            search.ibSearch.setOnClickListener {
-//                search.ibCancel.isVisible = false
-//                search.etSearch.clearFocus()
-//                val search = search.etSearch.text.trim().toString()
-//                viewModel.getWords(search)
-//                viewModel.query = search
-//                sortSearch = search
-//
-//                if (viewModel.words.value?.size == 0) {
-//                    binding.llEmpty.isGone = false
-//                    binding.tvLine1.text = "No matching result found for \"${search}\"."
-//                    binding.tvLine2.text = ""
-//                }
-//
-//                val snackBar =
-//                    Snackbar.make(
-//                        it,
-//                        "${viewModel.words.value?.size} match(s) found",
-//                        Snackbar.LENGTH_LONG
-//                    )
-//                snackBar.setBackgroundTint(
-//                    ContextCompat.getColor(requireContext(), R.color.blue_900)
-//                )
-//                snackBar.setAction("Hide") {
-//                    snackBar.dismiss()
-//                }
-//                snackBar.show()
-//            }
 
             fabAdd.setOnClickListener {
                 val directory = HomeFragmentDirections.actionHomeFragmentToAddWordFragment()
@@ -210,6 +157,7 @@ class AllWordsFragment : Fragment() {
         }
     }
 
+    // This is a private function that binds the adapter and layout to the fragment.
     private fun setupAdapter() {
         val layoutManager = LinearLayoutManager(this.activity)
         adapter = WordAdapter(emptyList()) {
@@ -220,14 +168,12 @@ class AllWordsFragment : Fragment() {
         binding.rvAllWords.layoutManager = layoutManager
     }
 
+    // This is a private function to enable the recycler view to list the data set once again if the data set changes.
     private fun refresh(str: String) {
         viewModel.getWords(str)
     }
 
-//    private fun refresh() {
-//        viewModel.getWords("")
-//    }
-
+    // This is a private function to enable the recycler view to list the data set once again after sorting.
     private fun sortRefresh(order: String, category: String, str: String) {
         viewModel.sortWords(order, category, str)
     }
@@ -235,6 +181,7 @@ class AllWordsFragment : Fragment() {
     companion object {
         private var allWordsFragmentInstance: AllWordsFragment? = null
 
+        // This function allows the fragment to behave as a singleton
         fun getInstance(): AllWordsFragment {
             if (allWordsFragmentInstance == null) {
                 allWordsFragmentInstance = AllWordsFragment()

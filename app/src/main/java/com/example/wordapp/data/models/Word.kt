@@ -3,6 +3,8 @@ package com.example.wordapp.data.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+
+// This data class holds the data model for Word
 @Entity
 data class Word(
     @PrimaryKey

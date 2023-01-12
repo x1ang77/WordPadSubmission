@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.wordapp.data.models.Word
 
+// This abstract class holds the database name and variable
 @Database(entities = [Word::class], version = 1)
 abstract class WordAppDatabase : RoomDatabase() {
     abstract val wordDao: WordDao

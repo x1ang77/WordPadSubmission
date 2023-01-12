@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
+// This is a ViewModel class that provides the All Words Fragment the access to the data set and functions that are available in the repository.
 class AllWordsViewModel(
     private val repo: WordRepository,
     private val storageService: StorageService
@@ -31,16 +32,19 @@ class AllWordsViewModel(
         sortOrder.value = storageService.getString(SortKey.SORT_ORDER.name)
     }
 
+    // This is a function that sets the key-value pair from the sortCategory to the SharedPreferences.
     fun onChangeSortBy(value: String) {
         sortCategory.value = value
         storageService.setString(SortKey.SORT_CATEGORY.name, value)
     }
 
+    // This is a function that sets the key-value pair from the sortOrder to the SharedPreferences.
     fun onChangeSortOrder(value: String) {
         sortOrder.value = value
         storageService.setString(SortKey.SORT_ORDER.name, value)
     }
 
+    // This is a function that returns the function to get all data from the data set when swiping down.
     fun onSwipeRefresh() {
         viewModelScope.launch {
             delay(3000)
@@ -49,6 +53,7 @@ class AllWordsViewModel(
         }
     }
 
+    // This is a function that returns the function to get all data from the data set.
     fun getWords(str: String) {
         viewModelScope.launch {
             val res = repo.getWords(str)
@@ -59,6 +64,7 @@ class AllWordsViewModel(
         }
     }
 
+    // This is a function that returns the function to get all data from the data set when sorting.
     fun sortWords(order: String, category: String, str: String) {
         viewModelScope.launch {
             var res = repo.getWords(str)
@@ -77,6 +83,8 @@ class AllWordsViewModel(
         }
     }
 
+    // This a Provider class that provides All Words Fragment's UI for working with the data.
+    // It serves as a central repository of data where users can store and can fetch the data.
     class Provider(private val repo: WordRepository, private val storageService: StorageService) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

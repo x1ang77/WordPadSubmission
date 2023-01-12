@@ -28,6 +28,7 @@ import com.example.wordapp.viewModels.CompletedWordsViewModel
 import com.example.wordapp.viewModels.HomeViewModel
 import com.google.android.material.snackbar.Snackbar
 
+// This is a fragment class, and it holds the data for the UI of Completed Words Fragment.
 class CompletedWordsFragment : Fragment() {
     private lateinit var binding: FragmentCompletedWordsBinding
     private lateinit var adapter: WordAdapter
@@ -111,56 +112,6 @@ class CompletedWordsFragment : Fragment() {
                 }
             })
 
-//            search.etSearch.setOnFocusChangeListener { _, hasFocus ->
-//                if (hasFocus) {
-//                    search.ibCancel.isVisible = true
-//                }
-//            }
-//
-//            search.ibCancel.setOnClickListener {
-//                viewModel.getWords("")
-//                search.ibCancel.isVisible = false
-//                search.etSearch.clearFocus()
-//                search.etSearch.text.clear()
-//                sortSearch = ""
-//
-//                if (viewModel.words.value?.size == 0) {
-//                    binding.llEmpty.isGone = false
-//                    binding.tvLine1.text = "No words learned yet."
-//                    binding.tvLine2.text = "Start today."
-//                } else {
-//                    binding.llEmpty.isGone = true
-//                }
-//            }
-//
-//            search.ibSearch.setOnClickListener {
-//                search.ibCancel.isVisible = false
-//                search.etSearch.clearFocus()
-//                val search = search.etSearch.text.trim().toString()
-//                viewModel.getWords(search)
-//                sortSearch = search
-//
-//                if (viewModel.words.value?.size == 0) {
-//                    binding.llEmpty.isGone = false
-//                    binding.tvLine1.text = "No matching result found for \"${search}\"."
-//                    binding.tvLine2.text = ""
-//                }
-//
-//                val snackBar =
-//                    Snackbar.make(
-//                        it,
-//                        "${viewModel.words.value?.size} match(s) found",
-//                        Snackbar.LENGTH_LONG
-//                    )
-//                snackBar.setBackgroundTint(
-//                    ContextCompat.getColor(requireContext(), R.color.blue_900)
-//                )
-//                snackBar.setAction("Hide") {
-//                    snackBar.dismiss()
-//                }
-//                snackBar.show()
-//            }
-
             search.ibSort.setOnClickListener {
                 dialogBinding.radioGroup.setOnCheckedChangeListener { _, id ->
                     order = when (id) {
@@ -194,6 +145,8 @@ class CompletedWordsFragment : Fragment() {
                         dialogBinding.tvWarning.isVisible = true
                     } else {
                         sortRefresh(order, category, emptyQuery)
+                        viewModel.onChangeSortBy(category)
+                        viewModel.onChangeSortOrder(order)
                         myDialog.dismiss()
                     }
                 }
@@ -201,6 +154,7 @@ class CompletedWordsFragment : Fragment() {
         }
     }
 
+    // This is a private function that binds the adapter and layout to the fragment.
     private fun setupAdapter() {
         val layoutManager = LinearLayoutManager(this.activity)
         adapter = WordAdapter(emptyList()) {
@@ -211,10 +165,12 @@ class CompletedWordsFragment : Fragment() {
         binding.rvCompletedWords.layoutManager = layoutManager
     }
 
+    // This is a private function to enable the recycler view to list the data set once again if the data set changes.
     private fun refresh(str: String) {
         viewModel.getWords(str)
     }
 
+    // This is a private function to enable the recycler view to list the data set once again after sorting.
     private fun sortRefresh(order: String, category: String, str: String) {
         viewModel.sortWords(order, category, str)
     }
@@ -222,6 +178,7 @@ class CompletedWordsFragment : Fragment() {
     companion object {
         private var completedWordsFragmentInstance: CompletedWordsFragment? = null
 
+        // This function allows the fragment to behave as a singleton
         fun getInstance(): CompletedWordsFragment {
             if (completedWordsFragmentInstance == null) {
                 completedWordsFragmentInstance = CompletedWordsFragment()

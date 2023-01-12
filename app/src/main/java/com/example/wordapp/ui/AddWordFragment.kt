@@ -20,6 +20,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+// This is a fragment class, and it holds the data for the UI of Add Word Fragment.
 class AddWordFragment : Fragment() {
     private lateinit var binding: FragmentAddEditWordBinding
     private val viewModel: AddWordViewModel by viewModels {
@@ -76,6 +77,7 @@ class AddWordFragment : Fragment() {
         }
     }
 
+    // This is a private function that checks if any input in the list is empty.
     private fun validate(vararg list: String): Boolean {
         for (field in list) {
             if (field.isEmpty()) {

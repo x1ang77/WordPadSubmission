@@ -18,6 +18,7 @@ import com.example.wordapp.databinding.FragmentWordBinding
 import com.example.wordapp.viewModels.WordViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+// This is a fragment class, and it holds the data for the UI of Word Fragment.
 class WordFragment : Fragment() {
     private lateinit var binding: FragmentWordBinding
     private val viewModel: WordViewModel by viewModels {
